@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  />
+  <meta name="theme-color" content="#050505" />
+  <title>Nakamura AI Core</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--top" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--bottom" aria-hidden="true"></div>
+
+  <main class="stage">
+    <header class="hud font-display">
+      <span class="hud__tag">NAKAMURA</span>
+      <span class="hud__status">
+        <span class="hud__dot"></span>
+        ONLINE
+      </span>
+    </header>
+
+    <section class="core-zone">
+      <p class="core-zone__hint font-display">TAP CORE TO CHARGE</p>
+
+      <button
+        type="button"
+        id="ai-core"
+        class="ai-core"
+        aria-label="Tap core to charge"
+      >
+        <span class="ai-core__ring ai-core__ring--outer" aria-hidden="true"></span>
+        <span class="ai-core__ring ai-core__ring--mid" aria-hidden="true"></span>
+        <span class="ai-core__ring ai-core__ring--inner" aria-hidden="true"></span>
+        <span class="ai-core__orb" aria-hidden="true"></span>
+        <span class="ai-core__label font-display">CORE</span>
+      </button>
+
+      <div class="stats font-display" aria-live="polite">
+        <div class="stat">
+          <span class="stat__label">ENERGY</span>
+          <strong id="energy" class="stat__value">0</strong>
+        </div>
+        <div class="stat stat--nodes">
+          <span class="stat__label">NODES COLLECTED</span>
+          <strong id="nodes" class="stat__value">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <nav class="dock font-display" aria-label="Main navigation">
+      <button type="button" class="dock__btn" id="btn-leaderboard">
+        LEADERBOARD
+      </button>
+      <button type="button" class="dock__btn" id="btn-missions">
+        MISSIONS
+      </button>
+    </nav>
+
+    <footer class="hud hud--foot font-display">
+      <span>TELEGRAM H5</span>
+      <span id="sync-pulse">SYNC</span>
+    </footer>
+  </main>
+
+  <div id="float-layer" class="float-layer" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

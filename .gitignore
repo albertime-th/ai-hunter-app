@@ -1,0 +1,9 @@
+.env
+bot_token.env
+**/.env
+**/bot_token.env
+automation_profile/
+upwork_profile/
+__pycache__/
+*.pyc
+.DS_Store
