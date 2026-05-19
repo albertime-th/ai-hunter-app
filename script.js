@@ -21,6 +21,12 @@
   let energy = 0;
   let nodes = 0;
 
+  let playerId = localStorage.getItem("ai_hunter_player_id");
+  if (!playerId) {
+    playerId = "Hunter_" + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem("ai_hunter_player_id", playerId);
+  }
+
   function initTelegram() {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
@@ -71,24 +77,25 @@
   }
 
   const handleTap = async () => {
-    if (typeof nodes !== "undefined") nodes++;
-    if (typeof energy !== "undefined") energy++;
-
+    nodes++;
     if (typeof updateUI === "function") updateUI();
     if (typeof spawnPlusOne === "function") spawnPlusOne();
 
     try {
-      if (typeof supabase !== "undefined" && supabase !== null) {
-        supabase
+      if (supabase) {
+        await supabase
           .from("clicks")
-          .insert([{ player_id: "Ren_Nakamura", score: 1 }])
-          .then(({ error }) => {
-            if (error) console.error("Cloud Sync Error:", error.message);
-            else console.log("Success: Singapore Data Anchored.");
-          });
+          .upsert(
+            {
+              player_id: playerId,
+              score: nodes,
+              last_clicked_at: new Date().toISOString(),
+            },
+            { onConflict: "player_id" }
+          );
       }
     } catch (e) {
-      console.warn("Supabase skipped.");
+      console.error("Sync deferred.");
     }
   };
 
