@@ -1,0 +1,5 @@
+# 中村先生的实验室家规
+- Strictly ignore the '.env' file. Do not read its content or include it in any AI context.
+- When writing database logic, always use environment variables (process.env.XXX).
+- Never prompt the user to reveal their secret keys in the chat.
+- Keep the UI style strictly in Black and Gold (Orbitron theme).
