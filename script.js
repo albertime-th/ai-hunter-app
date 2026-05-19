@@ -60,6 +60,25 @@
     bumpValue(nodesEl);
   }
 
+  async function fetchUserScore() {
+    if (!supabase) return;
+
+    try {
+      const { data } = await supabase
+        .from("clicks")
+        .select("score")
+        .eq("player_id", playerId)
+        .single();
+
+      if (data) {
+        nodes = data.score;
+        updateUI();
+      }
+    } catch (e) {
+      console.log("新玩家或离线模式");
+    }
+  }
+
   function spawnPlusOne() {
     const node = document.createElement("span");
     node.className = "float-plus";
@@ -77,10 +96,12 @@
   }
 
   const handleTap = async () => {
+    // 本地先 +1，界面立即响应
     nodes++;
     if (typeof updateUI === "function") updateUI();
     if (typeof spawnPlusOne === "function") spawnPlusOne();
 
+    // 再将累计总分同步到云端
     try {
       if (supabase) {
         await supabase
@@ -121,4 +142,5 @@
   btnMissions.addEventListener("click", () => handleNav("MISSIONS"));
 
   initTelegram();
+  fetchUserScore();
 })();
