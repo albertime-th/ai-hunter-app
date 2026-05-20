@@ -132,8 +132,21 @@
   }
 
   async function updateLeaderboard() {
+    const listElement = document.querySelector(
+      "#view-leaderboard #leaderboard-list"
+    );
+
+    if (!listElement) {
+      console.error("[Leaderboard Sync Error]: #leaderboard-list not found in view-leaderboard");
+      return;
+    }
+
     try {
-      if (!supabase) return;
+      if (!supabase) {
+        listElement.innerHTML =
+          '<li class="loading" style="text-align: center; color: #888; font-size: 0.8rem; padding: 20px;">Offline — Supabase unavailable.</li>';
+        return;
+      }
 
       const { data, error } = await supabase
         .from("clicks")
@@ -143,27 +156,32 @@
 
       if (error) throw error;
 
-      const listElement = document.getElementById("leaderboard-list");
-      if (listElement && data) {
-        listElement.innerHTML = data
-          .map((player, index) => {
-            const isSelf = player.player_id === playerId;
-            const displayName = isSelf
-              ? `👑 ${player.player_id} (YOU)`
-              : `👤 ${player.player_id}`;
+      if (!data || data.length === 0) {
+        listElement.innerHTML =
+          '<li class="loading" style="text-align: center; color: #888; font-size: 0.8rem; padding: 20px;">No hunters on the board yet.</li>';
+        return;
+      }
 
-            return `
+      listElement.innerHTML = data
+        .map((player, index) => {
+          const isSelf = player.player_id === playerId;
+          const displayName = isSelf
+            ? `👑 ${player.player_id} (YOU)`
+            : `👤 ${player.player_id}`;
+
+          return `
                     <li class="${isSelf ? "active-player" : ""}">
                         <span class="rank">#${index + 1}</span>
                         <span class="name">${displayName}</span>
                         <span class="score-val">${player.score} Nodes</span>
                     </li>
                 `;
-          })
-          .join("");
-      }
+        })
+        .join("");
     } catch (e) {
       console.error("[Leaderboard Sync Error]:", e.message);
+      listElement.innerHTML =
+        '<li class="loading" style="text-align: center; color: #888; font-size: 0.8rem; padding: 20px;">Sync failed — check console.</li>';
     }
   }
 
@@ -180,23 +198,31 @@
       const button = document.getElementById(tabId);
       if (button) {
         button.addEventListener("click", () => {
+          // 1. Hide all views
           document.querySelectorAll(".app-view").forEach((view) => {
             view.style.display = "none";
           });
 
+          // 2. Show the selected view
           const activeViewId = tabs[tabId];
           const activeView = document.getElementById(activeViewId);
           if (activeView) activeView.style.display = "block";
 
+          // 3. Update nav button highlight state
           document.querySelectorAll(".nav-btn").forEach((btn) => {
             btn.classList.remove("active");
           });
           button.classList.add("active");
 
+          // 4. Force fresh leaderboard fetch when tab opens
           if (activeViewId === "view-leaderboard") {
             updateLeaderboard();
           }
         });
+      } else {
+        console.warn(
+          `[Warning] Navigation button with ID '${tabId}' was not found in DOM.`
+        );
       }
     });
   }
