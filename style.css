@@ -276,10 +276,23 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* 视图切换 */
+.app-view {
+  flex: 1;
+  min-height: 0;
+}
+
+.missions-box h3 {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
 /* 导航 */
 .dock {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -308,6 +321,17 @@ body {
   transform: scale(0.96);
   border-color: var(--gold);
   box-shadow: 0 0 16px rgba(201, 162, 39, 0.25);
+}
+
+.nav-btn.active {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: linear-gradient(
+    180deg,
+    rgba(201, 162, 39, 0.22) 0%,
+    rgba(5, 5, 5, 0.75) 100%
+  );
+  box-shadow: 0 0 12px rgba(201, 162, 39, 0.2);
 }
 
 /* AI 核心按钮 — 呼吸灯 */
