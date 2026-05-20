@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
   />
-  <meta name="theme-color" content="#050505" />
+  <meta name="theme-color" content="#1a1617" />
   <title>Nakamura AI Core</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,50 +32,65 @@
     </header>
 
     <div id="view-game" class="app-view">
-      <section class="core-zone pet-zone">
-        <p class="core-zone__hint font-display">TAP CYBER-HOUND TO MINE</p>
+      <div id="selection-stage" class="selection-stage">
+        <button type="button" id="btn-select-pet" class="font-display btn-select-pet">
+          SELECT YOUR<br />PET
+        </button>
+        <p class="selection-stage__hint">Tap to awaken your cyber companion</p>
+      </div>
 
-        <div
-          id="pet-stage"
-          class="pet-idle"
-          role="button"
-          tabindex="0"
-          aria-label="Tap pet to earn nodes"
-        >
-          <div id="cyber-hound">🐾</div>
-        </div>
-
-        <div class="nodes-wallet font-display" aria-live="polite">
-          <span class="nodes-wallet__label">NODES COLLECTED</span>
-          <strong id="nodes" class="nodes-wallet__value">0</strong>
-        </div>
-
-        <div class="status-bars font-display">
-          <div class="bar-container">
-            ⚡ ENG: <span id="val-energy">100</span>%
-            <div class="bar"><div id="fill-energy" style="width: 100%"></div></div>
-          </div>
-          <div class="bar-container">
-            💧 HYD: <span id="val-hydration">100</span>%
-            <div class="bar"><div id="fill-hydration" style="width: 100%"></div></div>
-          </div>
-        </div>
-
-        <div class="interaction-deck">
-          <button type="button" id="btn-feed" class="btn-action font-display">🍖 FEED (-50 Nodes)</button>
-          <button type="button" id="btn-hydrate" class="btn-action font-display">💧 DRINK (-30 Nodes)</button>
-        </div>
-      </section>
-
-      <div class="referral-container" style="margin: 8px auto; max-width: 90%; text-align: center;">
+      <div id="pet-growth-stage" class="pet-growth-stage" style="display: none; position: relative; text-align: center;">
         <button
           type="button"
-          id="invite-btn"
-          class="font-display"
-          style="width: 100%; padding: 8px 12px; background: linear-gradient(135deg, #d4af37, #aa7c11); color: #000; font-weight: 700; font-size: 0.8rem; border: none; border-radius: 6px; cursor: pointer; letter-spacing: 0.5px; box-shadow: 0 2px 6px rgba(212, 175, 55, 0.15); transition: transform 0.1s ease;"
+          id="btn-back-to-select"
+          class="font-display btn-back-to-select"
+          style="position: absolute; top: -10px; left: 15px; background: transparent; border: 1px solid rgba(255, 107, 107, 0.4); color: #ff6b6b; padding: 4px 10px; font-size: 0.75rem; font-weight: 700; border-radius: 12px; cursor: pointer; letter-spacing: 0.5px; transition: all 0.2s;"
         >
-          🔗 RECRUIT SQUAD (+500 Nodes)
+          ◀ BACK
         </button>
+
+        <section class="core-zone pet-zone">
+          <p class="core-zone__hint font-display">TAP YOUR COMPANION TO MINE</p>
+
+          <div id="pet-avatar" class="pet-avatar" aria-hidden="true">🐱</div>
+
+          <div
+            id="pet-stage"
+            class="pet-idle"
+            role="button"
+            tabindex="0"
+            aria-label="Tap pet to earn nodes"
+          >
+            <div id="cyber-hound">🐾</div>
+          </div>
+
+          <div class="nodes-wallet font-display" aria-live="polite">
+            <span class="nodes-wallet__label">NODES COLLECTED</span>
+            <strong id="nodes" class="nodes-wallet__value">0</strong>
+          </div>
+
+          <div class="status-bars font-display">
+            <div class="bar-container bar-container--eng">
+              ⚡ ENG: <span id="val-energy">100</span>%
+              <div class="bar"><div id="fill-energy" class="bar-fill bar-fill--eng" style="width: 100%"></div></div>
+            </div>
+            <div class="bar-container bar-container--hyd">
+              💧 HYD: <span id="val-hydration">100</span>%
+              <div class="bar"><div id="fill-hydration" class="bar-fill bar-fill--hyd" style="width: 100%"></div></div>
+            </div>
+          </div>
+
+          <div class="interaction-deck">
+            <button type="button" id="btn-feed" class="btn-action font-display">🍖 FEED (-50 Nodes)</button>
+            <button type="button" id="btn-hydrate" class="btn-action font-display">💧 DRINK (-30 Nodes)</button>
+          </div>
+        </section>
+
+        <div class="referral-container">
+          <button type="button" id="invite-btn" class="font-display btn-invite">
+            🔗 RECRUIT SQUAD (+500 Nodes)
+          </button>
+        </div>
       </div>
     </div>
 

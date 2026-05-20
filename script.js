@@ -11,13 +11,13 @@
       ? window.supabase.createClient(supabaseUrl, supabaseKey)
       : null;
 
+  const selectionStage = document.getElementById("selection-stage");
+  const petGrowthStage = document.getElementById("pet-growth-stage");
   const petStage = document.getElementById("pet-stage");
+  const petAvatar = document.getElementById("pet-avatar");
+  const cyberHound = document.getElementById("cyber-hound");
   const floatLayer = document.getElementById("float-layer");
   const nodesEl = document.getElementById("nodes");
-  const valEnergyEl = document.getElementById("val-energy");
-  const valHydrationEl = document.getElementById("val-hydration");
-  const fillEnergyEl = document.getElementById("fill-energy");
-  const fillHydrationEl = document.getElementById("fill-hydration");
   const btnFeed = document.getElementById("btn-feed");
   const btnHydrate = document.getElementById("btn-hydrate");
 
@@ -27,15 +27,32 @@
   const DRINK_RESTORE = 35;
   const TAP_DRAIN = 2;
 
-  // Premium hooks — TON shop (Star-Meat 2x buff, Auto-Feeder idle)
   const premium = {
     doubleNodesUntil: 0,
     autoFeeder: false,
   };
 
+  let petState = {
+    hasPet: false,
+    selectedType: null,
+    energy: 100,
+    hydration: 100,
+  };
+
+  let decayTimer = null;
   let nodes = 0;
-  let petEng = 100;
-  let petHyd = 100;
+
+  try {
+    const savedPet = localStorage.getItem("ai_hunter_pet_state");
+    if (savedPet) {
+      const parsed = JSON.parse(savedPet);
+      if (parsed.hasPet) {
+        petState = { ...petState, ...parsed };
+      }
+    }
+  } catch (e) {
+    console.warn("[System] Could not restore pet state from local storage.");
+  }
 
   let playerId = localStorage.getItem("ai_hunter_player_id");
   if (!playerId) {
@@ -88,17 +105,66 @@
 
   function updateUI() {
     if (nodesEl) nodesEl.textContent = String(nodes);
-
-    petEng = clampStat(petEng);
-    petHyd = clampStat(petHyd);
-
-    if (valEnergyEl) valEnergyEl.textContent = String(Math.round(petEng));
-    if (valHydrationEl) valHydrationEl.textContent = String(Math.round(petHyd));
-    if (fillEnergyEl) fillEnergyEl.style.width = `${petEng}%`;
-    if (fillHydrationEl) fillHydrationEl.style.width = `${petHyd}%`;
-
+    renderStatusBars();
     if (btnFeed) btnFeed.disabled = nodes < FEED_COST;
     if (btnHydrate) btnHydrate.disabled = nodes < DRINK_COST;
+  }
+
+  function renderStatusBars() {
+    const fillEnergy = document.getElementById("fill-energy");
+    const fillHydration = document.getElementById("fill-hydration");
+    const valEnergy = document.getElementById("val-energy");
+    const valHydration = document.getElementById("val-hydration");
+
+    petState.energy = clampStat(petState.energy);
+    petState.hydration = clampStat(petState.hydration);
+
+    if (fillEnergy && valEnergy) {
+      fillEnergy.style.width = `${petState.energy}%`;
+      valEnergy.innerText = Math.round(petState.energy);
+    }
+    if (fillHydration && valHydration) {
+      fillHydration.style.width = `${petState.hydration}%`;
+      valHydration.innerText = Math.round(petState.hydration);
+    }
+  }
+
+  async function syncPetStatusToCloud() {
+    localStorage.setItem("ai_hunter_pet_state", JSON.stringify(petState));
+
+    if (!supabase || !petState.hasPet) return;
+
+    try {
+      await supabase.from("clicks").upsert(
+        {
+          player_id: playerId,
+          score: nodes,
+          last_clicked_at: new Date().toISOString(),
+        },
+        { onConflict: "player_id" }
+      );
+    } catch (e) {
+      console.warn("[Sync] Pet status deferred to local cache.");
+    }
+  }
+
+  function startLifeDecay() {
+    if (decayTimer) clearInterval(decayTimer);
+
+    decayTimer = setInterval(() => {
+      if (!petState.hasPet) return;
+
+      petState.energy = Math.max(0, petState.energy - 2);
+      petState.hydration = Math.max(0, petState.hydration - 1);
+
+      if (premium.autoFeeder && petState.energy < 40 && nodes >= FEED_COST) {
+        nodes -= FEED_COST;
+        petState.energy = clampStat(petState.energy + FEED_RESTORE);
+      }
+
+      renderStatusBars();
+      syncPetStatusToCloud();
+    }, 8000);
   }
 
   async function syncScoreToCloud() {
@@ -294,15 +360,17 @@
   }
 
   async function handlePetTap() {
-    if (petEng <= 0 || petHyd <= 0) {
+    if (!petState.hasPet) return;
+
+    if (petState.energy <= 0 || petState.hydration <= 0) {
       console.log("[Pet] Too weak — feed or hydrate to keep mining.");
       return;
     }
 
     const gain = nodePerTap();
     nodes += gain;
-    petEng -= TAP_DRAIN;
-    petHyd -= 1;
+    petState.energy = Math.max(0, petState.energy - TAP_DRAIN);
+    petState.hydration = Math.max(0, petState.hydration - 1);
 
     updateUI();
     spawnPlusOne(gain);
@@ -311,37 +379,80 @@
     if (navigator.vibrate) navigator.vibrate(10);
 
     await syncScoreToCloud();
+    await syncPetStatusToCloud();
   }
 
   function handleFeed() {
     if (nodes < FEED_COST) return;
 
     nodes -= FEED_COST;
-    petEng = clampStat(petEng + FEED_RESTORE);
+    petState.energy = clampStat(petState.energy + FEED_RESTORE);
     updateUI();
     syncScoreToCloud();
+    syncPetStatusToCloud();
   }
 
   function handleHydrate() {
     if (nodes < DRINK_COST) return;
 
     nodes -= DRINK_COST;
-    petHyd = clampStat(petHyd + DRINK_RESTORE);
+    petState.hydration = clampStat(petState.hydration + DRINK_RESTORE);
     updateUI();
     syncScoreToCloud();
+    syncPetStatusToCloud();
   }
 
-  function startIdleLoop() {
-    setInterval(() => {
-      petEng = clampStat(petEng - 1);
-      petHyd = clampStat(petHyd - 1.5);
+  function applyPetVisual(emoji) {
+    if (petAvatar) petAvatar.textContent = emoji;
+    if (cyberHound) cyberHound.textContent = emoji;
+  }
 
-      if (premium.autoFeeder && petEng < 40 && nodes >= FEED_COST) {
-        handleFeed();
-      }
+  function setupPetSelection() {
+    const selectBtn = document.getElementById("btn-select-pet");
+    const backBtn = document.getElementById("btn-back-to-select");
 
-      updateUI();
-    }, 8000);
+    if (selectBtn) {
+      selectBtn.addEventListener("click", () => {
+        petState.hasPet = true;
+        petState.selectedType = "Ragdoll";
+
+        applyPetVisual("🐱");
+
+        if (selectionStage) selectionStage.style.display = "none";
+        if (petGrowthStage) petGrowthStage.style.display = "block";
+
+        renderStatusBars();
+        startLifeDecay();
+        syncPetStatusToCloud();
+        console.log("[Router] Navigated into Pet Stage. Life decay running.");
+      });
+    }
+
+    if (backBtn) {
+      backBtn.addEventListener("click", () => {
+        petState.hasPet = false;
+
+        if (petGrowthStage) petGrowthStage.style.display = "none";
+        if (selectionStage) selectionStage.style.display = "block";
+
+        if (decayTimer) clearInterval(decayTimer);
+        decayTimer = null;
+
+        syncPetStatusToCloud();
+        console.log("[Router] Successfully returned to Selection Stage. Timer paused.");
+      });
+    }
+
+    if (petState.hasPet) {
+      applyPetVisual("🐱");
+      if (selectionStage) selectionStage.style.display = "none";
+      if (petGrowthStage) petGrowthStage.style.display = "block";
+      renderStatusBars();
+      startLifeDecay();
+    } else {
+      if (selectionStage) selectionStage.style.display = "block";
+      if (petGrowthStage) petGrowthStage.style.display = "none";
+    }
   }
 
   function setupPetInteractions() {
@@ -364,8 +475,8 @@
     updateUI();
     setupInviteButton();
     setupNavigation();
+    setupPetSelection();
     setupPetInteractions();
-    startIdleLoop();
   }
 
   initTelegram();
