@@ -1,155 +1,154 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
-  />
-  <meta name="theme-color" content="#1a1617" />
-  <title>Nakamura AI Core</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
-</head>
-<body>
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow--top" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow--bottom" aria-hidden="true"></div>
-
-  <div id="app-container" class="cyber-pet-atelier font-display">
-    <header class="app-header">
-      <div class="logo-area">NAKAMURA</div>
-      <div class="status-area">
-        <span class="status-dot online" aria-hidden="true"></span>
-        ONLINE
-      </div>
-    </header>
-
-    <main class="app-main">
-      <div id="view-game" class="app-view">
-        <div id="selection-stage" class="absolute-center">
-          <button type="button" id="btn-select-pet" class="premium-btn temple-btn font-display">
-            SELECT YOUR<br />PET
-          </button>
-          <p class="select-text">Tap to awaken your cyber companion</p>
-        </div>
-
-        <div id="pet-growth-stage" class="pet-view" style="display: none;">
-          <div class="pet-toolbar">
-            <button type="button" id="btn-back-to-select" class="back-btn font-display">
-              ◀ BACK
-            </button>
-          </div>
-
-          <section class="core-zone pet-zone">
-            <p class="core-zone__hint font-display">TAP YOUR COMPANION TO MINE</p>
-
-            <div id="pet-avatar" class="pet-avatar" aria-hidden="true">🐱</div>
-
-            <div
-              id="pet-stage"
-              class="pet-idle"
-              role="button"
-              tabindex="0"
-              aria-label="Tap pet to earn nodes"
-            >
-              <div id="cyber-hound">🐾</div>
-            </div>
-
-            <div class="nodes-wallet font-display" aria-live="polite">
-              <span class="nodes-wallet__label">NODES COLLECTED</span>
-              <strong id="nodes" class="nodes-wallet__value">0</strong>
-            </div>
-
-            <div class="status-bars font-display">
-              <div class="bar-container bar-container--eng">
-                ⚡ ENG: <span id="val-energy">100</span>%
-                <div class="bar"><div id="fill-energy" class="bar-fill bar-fill--eng" style="width: 100%"></div></div>
-              </div>
-              <div class="bar-container bar-container--hyd">
-                💧 HYD: <span id="val-hydration">100</span>%
-                <div class="bar"><div id="fill-hydration" class="bar-fill bar-fill--hyd" style="width: 100%"></div></div>
-              </div>
-            </div>
-
-            <div class="interaction-deck">
-              <button type="button" id="btn-feed" class="btn-action font-display">🍖 FEED (-50 Nodes)</button>
-              <button type="button" id="btn-hydrate" class="btn-action font-display">💧 DRINK (-30 Nodes)</button>
-            </div>
-          </section>
-
-          <div class="referral-container">
-            <button type="button" id="invite-btn" class="font-display btn-invite">
-              🔗 RECRUIT SQUAD (+500 Nodes)
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div id="view-leaderboard" class="app-view" style="display: none;">
-        <div class="leaderboard-box font-display" style="padding: 15px;">
-          <h3 style="color: #d4af37; text-align: center; font-size: 1.1rem; margin-bottom: 5px; letter-spacing: 1px;">🏆 GLOBAL HUNTER LEADERBOARD</h3>
-          <p style="color: #888; font-size: 0.75rem; text-align: center; margin-bottom: 20px;">Top elite units in the node collection matrix.</p>
-          <ul id="leaderboard-list" style="list-style: none; padding: 0; margin: 0;">
-            <li class="loading" style="text-align: center; color: #888; font-size: 0.8rem; padding: 20px;">Synchronizing Singapore Data Hub...</li>
-          </ul>
-        </div>
-      </div>
-
-      <div id="view-missions" class="app-view" style="display: none;">
-        <div class="missions-box font-display" style="padding: 15px; color: #fff;">
-          <h3 style="color: #d4af37; text-align: center; font-size: 1.1rem; margin-bottom: 15px; letter-spacing: 1px;">🚀 AMPLIFY YOUR NODES</h3>
-          <p style="color: #888; font-size: 0.75rem; text-align: center; margin-bottom: 20px;">Complete global tasks to unlock massive network power.</p>
-
-          <div class="task-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.2); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h4 style="margin: 0; font-size: 0.85rem; color: #fff;">🐦 FOLLOW OUR X</h4>
-              <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #888;">Stay tuned with Alpha updates</p>
-            </div>
-            <span style="color: #d4af37; font-weight: bold; font-size: 0.85rem;">+1,000</span>
-          </div>
-
-          <div class="task-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.2); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h4 style="margin: 0; font-size: 0.85rem; color: #fff;">📢 JOIN TELEGRAM ALPHA CHANNEL</h4>
-              <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #888;">Enter the core private hub</p>
-            </div>
-            <span style="color: #d4af37; font-weight: bold; font-size: 0.85rem;">+1,500</span>
-          </div>
-
-          <div class="task-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.2); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h4 style="margin: 0; font-size: 0.85rem; color: #fff;">👥 RECRUIT 3 NEW HUNTERS</h4>
-              <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #888;">Expand your telemetry squad</p>
-            </div>
-            <span style="color: #d4af37; font-weight: bold; font-size: 0.85rem;">+5,000</span>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <footer class="app-footer hud hud--foot font-display">
-      <span>TELEGRAM H5</span>
-      <span id="sync-pulse">SYNC</span>
-    </footer>
-
-    <nav id="app-navigation" class="dock font-display" aria-label="Main navigation">
-      <button type="button" class="dock__btn nav-btn active" id="btn-nav-game">GAME</button>
-      <button type="button" class="dock__btn nav-btn" id="btn-nav-missions">MISSIONS</button>
-      <button type="button" class="dock__btn nav-btn" id="btn-nav-leaderboard">LEADERBOARD</button>
-    </nav>
-  </div>
-
-  <div id="float-layer" class="float-layer" aria-hidden="true"></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="script.js"></script>
-</body>
-</html>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  />
+  <meta name="theme-color" content="#1a1617" />
+  <title>Nakamura AI Core</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--top" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--bottom" aria-hidden="true"></div>
+
+  <div id="app-container" class="cyber-pet-atelier font-display">
+    <header class="app-header">
+      <div class="logo-area">NAKAMURA</div>
+      <div class="status-area">
+        <span class="status-dot online" aria-hidden="true"></span>
+        ONLINE
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div id="view-game" class="app-view">
+        <div id="selection-stage">
+          <button type="button" id="btn-select-pet" class="font-display">
+            SELECT YOUR<br />PET
+          </button>
+          <p class="select-text">Tap to awaken your cyber companion</p>
+        </div>
+
+        <div id="pet-growth-stage" class="pet-view" style="display: none;">
+          <button type="button" id="btn-back-to-select" class="back-btn font-display">
+            ◀ BACK
+          </button>
+
+          <div class="pet-stage-content">
+            <section class="core-zone pet-zone">
+              <p class="core-zone__hint font-display">TAP YOUR COMPANION TO MINE</p>
+
+              <div id="pet-avatar" class="pet-avatar" aria-hidden="true">🐱</div>
+
+              <div
+                id="pet-stage"
+                class="pet-idle"
+                role="button"
+                tabindex="0"
+                aria-label="Tap pet to earn nodes"
+              >
+                <div id="cyber-hound">🐾</div>
+              </div>
+
+              <div class="nodes-wallet font-display" aria-live="polite">
+                <span class="nodes-wallet__label">NODES COLLECTED</span>
+                <strong id="nodes" class="nodes-wallet__value">0</strong>
+              </div>
+
+              <div class="status-bars font-display">
+                <div class="bar-container bar-container--eng">
+                  ⚡ ENG: <span id="val-energy">100</span>%
+                  <div class="bar"><div id="fill-energy" class="bar-fill bar-fill--eng" style="width: 100%"></div></div>
+                </div>
+                <div class="bar-container bar-container--hyd">
+                  💧 HYD: <span id="val-hydration">100</span>%
+                  <div class="bar"><div id="fill-hydration" class="bar-fill bar-fill--hyd" style="width: 100%"></div></div>
+                </div>
+              </div>
+
+              <div class="interaction-deck">
+                <button type="button" id="btn-feed" class="btn-action font-display">🍖 FEED (-50 Nodes)</button>
+                <button type="button" id="btn-hydrate" class="btn-action font-display">💧 DRINK (-30 Nodes)</button>
+              </div>
+            </section>
+
+            <div class="referral-container">
+              <button type="button" id="invite-btn" class="font-display btn-invite">
+                🔗 RECRUIT SQUAD (+500 Nodes)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="view-leaderboard" class="app-view" style="display: none;">
+        <div class="leaderboard-box font-display" style="padding: 15px;">
+          <h3 style="color: #d4af37; text-align: center; font-size: 1.1rem; margin-bottom: 5px; letter-spacing: 1px;">🏆 GLOBAL HUNTER LEADERBOARD</h3>
+          <p style="color: #888; font-size: 0.75rem; text-align: center; margin-bottom: 20px;">Top elite units in the node collection matrix.</p>
+          <ul id="leaderboard-list" style="list-style: none; padding: 0; margin: 0;">
+            <li class="loading" style="text-align: center; color: #888; font-size: 0.8rem; padding: 20px;">Synchronizing Singapore Data Hub...</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="view-missions" class="app-view" style="display: none;">
+        <div class="missions-box font-display" style="padding: 15px; color: #fff;">
+          <h3 style="color: #d4af37; text-align: center; font-size: 1.1rem; margin-bottom: 15px; letter-spacing: 1px;">🚀 AMPLIFY YOUR NODES</h3>
+          <p style="color: #888; font-size: 0.75rem; text-align: center; margin-bottom: 20px;">Complete global tasks to unlock massive network power.</p>
+
+          <div class="task-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.2); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h4 style="margin: 0; font-size: 0.85rem; color: #fff;">🐦 FOLLOW OUR X</h4>
+              <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #888;">Stay tuned with Alpha updates</p>
+            </div>
+            <span style="color: #d4af37; font-weight: bold; font-size: 0.85rem;">+1,000</span>
+          </div>
+
+          <div class="task-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.2); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h4 style="margin: 0; font-size: 0.85rem; color: #fff;">📢 JOIN TELEGRAM ALPHA CHANNEL</h4>
+              <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #888;">Enter the core private hub</p>
+            </div>
+            <span style="color: #d4af37; font-weight: bold; font-size: 0.85rem;">+1,500</span>
+          </div>
+
+          <div class="task-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.2); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h4 style="margin: 0; font-size: 0.85rem; color: #fff;">👥 RECRUIT 3 NEW HUNTERS</h4>
+              <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #888;">Expand your telemetry squad</p>
+            </div>
+            <span style="color: #d4af37; font-weight: bold; font-size: 0.85rem;">+5,000</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer hud hud--foot font-display">
+      <span>TELEGRAM H5</span>
+      <span id="sync-pulse">SYNC</span>
+    </footer>
+
+    <nav id="app-navigation" class="dock font-display" aria-label="Main navigation">
+      <button type="button" class="dock__btn nav-btn active" id="btn-nav-game">GAME</button>
+      <button type="button" class="dock__btn nav-btn" id="btn-nav-missions">MISSIONS</button>
+      <button type="button" class="dock__btn nav-btn" id="btn-nav-leaderboard">LEADERBOARD</button>
+    </nav>
+  </div>
+
+  <div id="float-layer" class="float-layer" aria-hidden="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>

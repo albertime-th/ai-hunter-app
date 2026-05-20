@@ -433,7 +433,7 @@
         petState.hasPet = false;
 
         if (petGrowthStage) petGrowthStage.style.display = "none";
-        if (selectionStage) selectionStage.style.display = "block";
+        if (selectionStage) selectionStage.style.display = "flex";
 
         if (decayTimer) clearInterval(decayTimer);
         decayTimer = null;
@@ -450,7 +450,7 @@
       renderStatusBars();
       startLifeDecay();
     } else {
-      if (selectionStage) selectionStage.style.display = "block";
+      if (selectionStage) selectionStage.style.display = "flex";
       if (petGrowthStage) petGrowthStage.style.display = "none";
     }
   }
