@@ -15,8 +15,6 @@
   const floatLayer = document.getElementById("float-layer");
   const energyEl = document.getElementById("energy");
   const nodesEl = document.getElementById("nodes");
-  const btnLeaderboard = document.getElementById("btn-leaderboard");
-  const btnMissions = document.getElementById("btn-missions");
 
   let energy = 0;
   let nodes = 0;
@@ -169,6 +167,40 @@
     }
   }
 
+  // ==================== NAVIGATION TAB SWITCHING ====================
+
+  function setupNavigation() {
+    const tabs = {
+      "btn-nav-game": "view-game",
+      "btn-nav-missions": "view-missions",
+      "btn-nav-leaderboard": "view-leaderboard",
+    };
+
+    Object.keys(tabs).forEach((tabId) => {
+      const button = document.getElementById(tabId);
+      if (button) {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".app-view").forEach((view) => {
+            view.style.display = "none";
+          });
+
+          const activeViewId = tabs[tabId];
+          const activeView = document.getElementById(activeViewId);
+          if (activeView) activeView.style.display = "block";
+
+          document.querySelectorAll(".nav-btn").forEach((btn) => {
+            btn.classList.remove("active");
+          });
+          button.classList.add("active");
+
+          if (activeViewId === "view-leaderboard") {
+            updateLeaderboard();
+          }
+        });
+      }
+    });
+  }
+
   function spawnPlusOne() {
     const node = document.createElement("span");
     node.className = "float-plus";
@@ -210,15 +242,6 @@
     }
   };
 
-  function handleNav(action) {
-    const tg = window.Telegram?.WebApp;
-    if (tg?.showAlert) {
-      tg.showAlert(`${action} — coming soon.`);
-      return;
-    }
-    window.alert(`${action} — coming soon.`);
-  }
-
   if (coreBtn) {
     coreBtn.addEventListener("click", handleTap);
 
@@ -228,12 +251,10 @@
     coreBtn.addEventListener("pointerleave", () => pressFeedback(false));
   }
 
-  btnLeaderboard.addEventListener("click", () => handleNav("LEADERBOARD"));
-  btnMissions.addEventListener("click", () => handleNav("MISSIONS"));
-
   async function initApp() {
     await fetchUserScore();
     setupInviteButton();
+    setupNavigation();
   }
 
   initTelegram();
