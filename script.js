@@ -27,6 +27,24 @@
     localStorage.setItem("ai_hunter_player_id", playerId);
   }
 
+  function getReferralParam() {
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get("ref") || params.get("referrer");
+    if (fromUrl) return fromUrl;
+
+    const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param;
+    if (startParam?.startsWith("ref_")) {
+      return startParam.slice(4);
+    }
+
+    return null;
+  }
+
+  function getInviteLink() {
+    const base = `${window.location.origin}${window.location.pathname}`;
+    return `${base}?ref=${encodeURIComponent(playerId)}`;
+  }
+
   function initTelegram() {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
@@ -63,20 +81,73 @@
   async function fetchUserScore() {
     if (!supabase) return;
 
+    const urlReferrer = getReferralParam();
+    if (urlReferrer && urlReferrer !== playerId) {
+      localStorage.setItem("ai_hunter_referred_by", urlReferrer);
+    }
+    const referredBy = localStorage.getItem("ai_hunter_referred_by");
+
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("clicks")
-        .select("score")
+        .select("score, referred_by")
         .eq("player_id", playerId)
         .single();
 
       if (data) {
-        nodes = data.score;
+        nodes = data.score ?? 0;
         updateUI();
+        return;
       }
+
+      if (error && error.code !== "PGRST116") {
+        console.log("新玩家或离线模式");
+        return;
+      }
+
+      const payload = {
+        player_id: playerId,
+        score: 0,
+        last_clicked_at: new Date().toISOString(),
+      };
+
+      if (referredBy && referredBy !== playerId) {
+        payload.referred_by = referredBy;
+      }
+
+      await supabase.from("clicks").upsert(payload, { onConflict: "player_id" });
     } catch (e) {
       console.log("新玩家或离线模式");
     }
+  }
+
+  function setupInviteButton() {
+    const btn = document.getElementById("invite-btn");
+    if (!btn) return;
+
+    btn.addEventListener("click", async () => {
+      const link = getInviteLink();
+      const shareText =
+        "加入 Nakamura AI Hunter！点击链接为我助力，你也斩获 500 算力 ⚡";
+      const tg = window.Telegram?.WebApp;
+
+      if (tg?.openTelegramLink) {
+        const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(shareText)}`;
+        tg.openTelegramLink(shareUrl);
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(`${shareText}\n${link}`);
+        const originalText = btn.textContent;
+        btn.textContent = "✅ 链接已复制！快去分享";
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2000);
+      } catch (e) {
+        window.prompt("复制邀请链接：", link);
+      }
+    });
   }
 
   async function updateLeaderboard() {
@@ -182,6 +253,7 @@
   async function initApp() {
     await fetchUserScore();
     updateLeaderboard();
+    setupInviteButton();
   }
 
   initTelegram();
