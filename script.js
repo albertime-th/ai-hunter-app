@@ -419,6 +419,7 @@
         applyPetVisual("🐱");
 
         if (selectionStage) selectionStage.style.display = "none";
+        selectBtn.classList.add("ghost-hidden");
         if (petGrowthStage) petGrowthStage.style.display = "block";
 
         renderStatusBars();
@@ -434,6 +435,7 @@
 
         if (petGrowthStage) petGrowthStage.style.display = "none";
         if (selectionStage) selectionStage.style.display = "flex";
+        if (selectBtn) selectBtn.classList.remove("ghost-hidden");
 
         if (decayTimer) clearInterval(decayTimer);
         decayTimer = null;
@@ -446,11 +448,13 @@
     if (petState.hasPet) {
       applyPetVisual("🐱");
       if (selectionStage) selectionStage.style.display = "none";
+      if (selectBtn) selectBtn.classList.add("ghost-hidden");
       if (petGrowthStage) petGrowthStage.style.display = "block";
       renderStatusBars();
       startLifeDecay();
     } else {
       if (selectionStage) selectionStage.style.display = "flex";
+      if (selectBtn) selectBtn.classList.remove("ghost-hidden");
       if (petGrowthStage) petGrowthStage.style.display = "none";
     }
   }

@@ -256,6 +256,16 @@ body {
   transform: scale(0.95);
 }
 
+#btn-select-pet.ghost-hidden {
+  position: static !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+  z-index: -100 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
 .select-text {
   color: #b5a4a4;
   font-size: 0.8rem;
@@ -385,6 +395,10 @@ body {
 .back-btn:active,
 #btn-back-to-select:active {
   transform: scale(0.96);
+}
+
+#btn-back-to-select {
+  z-index: 9999 !important;
 }
 
 .pet-avatar {
