@@ -14,12 +14,10 @@
   const selectionStage = document.getElementById("selection-stage");
   const petGrowthStage = document.getElementById("pet-growth-stage");
   const petStage = document.getElementById("pet-stage");
-  const petAvatar = document.getElementById("pet-avatar");
-  const cyberHound = document.getElementById("cyber-hound");
   const floatLayer = document.getElementById("float-layer");
-  const nodesEl = document.getElementById("nodes");
+  const nodesEl = document.getElementById("nodes-val");
   const btnFeed = document.getElementById("btn-feed");
-  const btnHydrate = document.getElementById("btn-hydrate");
+  const btnHydrate = document.getElementById("btn-drink");
 
   const FEED_COST = 50;
   const DRINK_COST = 30;
@@ -224,7 +222,7 @@
   }
 
   function setupInviteButton() {
-    const inviteBtn = document.getElementById("invite-btn");
+    const inviteBtn = document.getElementById("btn-recruit");
     if (inviteBtn) {
       inviteBtn.addEventListener("click", () => {
         const inviteUrl = `https://albertime-th.github.io/ai-hunter-app/?ref=${playerId}`;
@@ -311,23 +309,19 @@
       const button = document.getElementById(tabId);
       if (button) {
         button.addEventListener("click", () => {
-          // 1. Hide all views
           document.querySelectorAll(".app-view").forEach((view) => {
-            view.style.display = "none";
+            view.classList.remove("active");
           });
 
-          // 2. Show the selected view
           const activeViewId = tabs[tabId];
           const activeView = document.getElementById(activeViewId);
-          if (activeView) activeView.style.display = "block";
+          if (activeView) activeView.classList.add("active");
 
-          // 3. Update nav button highlight state
-          document.querySelectorAll(".nav-btn").forEach((btn) => {
+          document.querySelectorAll(".nav-tab").forEach((btn) => {
             btn.classList.remove("active");
           });
           button.classList.add("active");
 
-          // 4. Force fresh leaderboard fetch when tab opens
           if (activeViewId === "view-leaderboard") {
             updateLeaderboard();
           }
@@ -403,8 +397,7 @@
   }
 
   function applyPetVisual(emoji) {
-    if (petAvatar) petAvatar.textContent = emoji;
-    if (cyberHound) cyberHound.textContent = emoji;
+    if (petStage) petStage.textContent = emoji;
   }
 
   function setupPetSelection() {
@@ -420,7 +413,7 @@
 
         if (selectionStage) selectionStage.classList.add("is-hidden");
         selectBtn.classList.add("ghost-hidden");
-        if (petGrowthStage) petGrowthStage.style.display = "block";
+        if (petGrowthStage) petGrowthStage.style.display = "flex";
 
         renderStatusBars();
         startLifeDecay();
@@ -449,7 +442,7 @@
       applyPetVisual("🐱");
       if (selectionStage) selectionStage.classList.add("is-hidden");
       if (selectBtn) selectBtn.classList.add("ghost-hidden");
-      if (petGrowthStage) petGrowthStage.style.display = "block";
+      if (petGrowthStage) petGrowthStage.style.display = "flex";
       renderStatusBars();
       startLifeDecay();
     } else {
