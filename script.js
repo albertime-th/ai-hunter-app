@@ -79,6 +79,42 @@
     }
   }
 
+  async function updateLeaderboard() {
+    try {
+      if (!supabase) return;
+
+      const { data, error } = await supabase
+        .from("clicks")
+        .select("player_id, score")
+        .order("score", { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+
+      const listElement = document.getElementById("leaderboard-list");
+      if (listElement && data) {
+        listElement.innerHTML = data
+          .map((player, index) => {
+            const isSelf = player.player_id === playerId;
+            const displayName = isSelf
+              ? `👑 ${player.player_id} (你)`
+              : `👤 ${player.player_id}`;
+
+            return `
+                    <li class="${isSelf ? "active-player" : ""}">
+                        <span class="rank">#${index + 1}</span>
+                        <span class="name">${displayName}</span>
+                        <span class="score-val">${player.score} Nodes</span>
+                    </li>
+                `;
+          })
+          .join("");
+      }
+    } catch (e) {
+      console.error("排行榜拉取失败:", e.message);
+    }
+  }
+
   function spawnPlusOne() {
     const node = document.createElement("span");
     node.className = "float-plus";
@@ -104,7 +140,7 @@
     // 再将累计总分同步到云端
     try {
       if (supabase) {
-        await supabase
+        const { error } = await supabase
           .from("clicks")
           .upsert(
             {
@@ -114,6 +150,8 @@
             },
             { onConflict: "player_id" }
           );
+
+        if (!error) updateLeaderboard();
       }
     } catch (e) {
       console.error("Sync deferred.");
@@ -141,6 +179,11 @@
   btnLeaderboard.addEventListener("click", () => handleNav("LEADERBOARD"));
   btnMissions.addEventListener("click", () => handleNav("MISSIONS"));
 
+  async function initApp() {
+    await fetchUserScore();
+    updateLeaderboard();
+  }
+
   initTelegram();
-  fetchUserScore();
+  initApp();
 })();
