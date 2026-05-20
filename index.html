@@ -32,31 +32,38 @@
     </header>
 
     <div id="view-game" class="app-view">
-      <section class="core-zone">
-        <p class="core-zone__hint font-display">TAP CORE TO CHARGE</p>
+      <section class="core-zone pet-zone">
+        <p class="core-zone__hint font-display">TAP CYBER-HOUND TO MINE</p>
 
-        <button
-          type="button"
-          id="ai-core"
-          class="ai-core"
-          aria-label="Tap core to charge"
+        <div
+          id="pet-stage"
+          class="pet-idle"
+          role="button"
+          tabindex="0"
+          aria-label="Tap pet to earn nodes"
         >
-          <span class="ai-core__ring ai-core__ring--outer" aria-hidden="true"></span>
-          <span class="ai-core__ring ai-core__ring--mid" aria-hidden="true"></span>
-          <span class="ai-core__ring ai-core__ring--inner" aria-hidden="true"></span>
-          <span class="ai-core__orb" aria-hidden="true"></span>
-          <span class="ai-core__label font-display">CORE</span>
-        </button>
+          <div id="cyber-hound">🐾</div>
+        </div>
 
-        <div class="stats font-display" aria-live="polite">
-          <div class="stat">
-            <span class="stat__label">ENERGY</span>
-            <strong id="energy" class="stat__value">0</strong>
+        <div class="nodes-wallet font-display" aria-live="polite">
+          <span class="nodes-wallet__label">NODES COLLECTED</span>
+          <strong id="nodes" class="nodes-wallet__value">0</strong>
+        </div>
+
+        <div class="status-bars font-display">
+          <div class="bar-container">
+            ⚡ ENG: <span id="val-energy">100</span>%
+            <div class="bar"><div id="fill-energy" style="width: 100%"></div></div>
           </div>
-          <div class="stat stat--nodes">
-            <span class="stat__label">NODES COLLECTED</span>
-            <strong id="nodes" class="stat__value">0</strong>
+          <div class="bar-container">
+            💧 HYD: <span id="val-hydration">100</span>%
+            <div class="bar"><div id="fill-hydration" style="width: 100%"></div></div>
           </div>
+        </div>
+
+        <div class="interaction-deck">
+          <button type="button" id="btn-feed" class="btn-action font-display">🍖 FEED (-50 Nodes)</button>
+          <button type="button" id="btn-hydrate" class="btn-action font-display">💧 DRINK (-30 Nodes)</button>
         </div>
       </section>
 

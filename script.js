@@ -11,13 +11,31 @@
       ? window.supabase.createClient(supabaseUrl, supabaseKey)
       : null;
 
-  const coreBtn = document.getElementById("ai-core");
+  const petStage = document.getElementById("pet-stage");
   const floatLayer = document.getElementById("float-layer");
-  const energyEl = document.getElementById("energy");
   const nodesEl = document.getElementById("nodes");
+  const valEnergyEl = document.getElementById("val-energy");
+  const valHydrationEl = document.getElementById("val-hydration");
+  const fillEnergyEl = document.getElementById("fill-energy");
+  const fillHydrationEl = document.getElementById("fill-hydration");
+  const btnFeed = document.getElementById("btn-feed");
+  const btnHydrate = document.getElementById("btn-hydrate");
 
-  let energy = 0;
+  const FEED_COST = 50;
+  const DRINK_COST = 30;
+  const FEED_RESTORE = 40;
+  const DRINK_RESTORE = 35;
+  const TAP_DRAIN = 2;
+
+  // Premium hooks — TON shop (Star-Meat 2x buff, Auto-Feeder idle)
+  const premium = {
+    doubleNodesUntil: 0,
+    autoFeeder: false,
+  };
+
   let nodes = 0;
+  let petEng = 100;
+  let petHyd = 100;
 
   let playerId = localStorage.getItem("ai_hunter_player_id");
   if (!playerId) {
@@ -60,17 +78,46 @@
     }
   }
 
-  function bumpValue(el) {
-    el.classList.remove("score-bump");
-    void el.offsetWidth;
-    el.classList.add("score-bump");
+  function clampStat(value) {
+    return Math.max(0, Math.min(100, value));
+  }
+
+  function nodePerTap() {
+    return Date.now() < premium.doubleNodesUntil ? 2 : 1;
   }
 
   function updateUI() {
-    energyEl.textContent = String(energy);
-    nodesEl.textContent = String(nodes);
-    bumpValue(energyEl);
-    bumpValue(nodesEl);
+    if (nodesEl) nodesEl.textContent = String(nodes);
+
+    petEng = clampStat(petEng);
+    petHyd = clampStat(petHyd);
+
+    if (valEnergyEl) valEnergyEl.textContent = String(Math.round(petEng));
+    if (valHydrationEl) valHydrationEl.textContent = String(Math.round(petHyd));
+    if (fillEnergyEl) fillEnergyEl.style.width = `${petEng}%`;
+    if (fillHydrationEl) fillHydrationEl.style.width = `${petHyd}%`;
+
+    if (btnFeed) btnFeed.disabled = nodes < FEED_COST;
+    if (btnHydrate) btnHydrate.disabled = nodes < DRINK_COST;
+  }
+
+  async function syncScoreToCloud() {
+    if (!supabase) return;
+
+    try {
+      const { error } = await supabase.from("clicks").upsert(
+        {
+          player_id: playerId,
+          score: nodes,
+          last_clicked_at: new Date().toISOString(),
+        },
+        { onConflict: "player_id" }
+      );
+
+      if (!error) updateLeaderboard();
+    } catch (e) {
+      console.error("[Sync Error]: Update deferred.");
+    }
   }
 
   async function fetchUserScore() {
@@ -227,10 +274,10 @@
     });
   }
 
-  function spawnPlusOne() {
+  function spawnPlusOne(amount) {
     const node = document.createElement("span");
     node.className = "float-plus";
-    node.textContent = "+1";
+    node.textContent = `+${amount}`;
 
     const jitterX = (Math.random() - 0.5) * 48;
     node.style.marginLeft = `${jitterX}px`;
@@ -239,48 +286,86 @@
     node.addEventListener("animationend", () => node.remove());
   }
 
-  function pressFeedback(on) {
-    coreBtn.classList.toggle("is-pressed", on);
+  function petBounce() {
+    if (!petStage) return;
+    petStage.classList.remove("pet-bounce");
+    void petStage.offsetWidth;
+    petStage.classList.add("pet-bounce");
   }
 
-  const handleTap = async () => {
-    nodes++;
-    if (typeof updateUI === "function") updateUI();
-    if (typeof spawnPlusOne === "function") spawnPlusOne();
-
-    try {
-      if (supabase) {
-        const { error } = await supabase
-          .from("clicks")
-          .upsert(
-            {
-              player_id: playerId,
-              score: nodes,
-              last_clicked_at: new Date().toISOString(),
-            },
-            { onConflict: "player_id" }
-          );
-
-        if (!error) updateLeaderboard();
-      }
-    } catch (e) {
-      console.error("[Sync Error]: Update deferred.");
+  async function handlePetTap() {
+    if (petEng <= 0 || petHyd <= 0) {
+      console.log("[Pet] Too weak — feed or hydrate to keep mining.");
+      return;
     }
-  };
 
-  if (coreBtn) {
-    coreBtn.addEventListener("click", handleTap);
+    const gain = nodePerTap();
+    nodes += gain;
+    petEng -= TAP_DRAIN;
+    petHyd -= 1;
 
-    coreBtn.addEventListener("pointerdown", () => pressFeedback(true));
-    coreBtn.addEventListener("pointerup", () => pressFeedback(false));
-    coreBtn.addEventListener("pointercancel", () => pressFeedback(false));
-    coreBtn.addEventListener("pointerleave", () => pressFeedback(false));
+    updateUI();
+    spawnPlusOne(gain);
+    petBounce();
+
+    if (navigator.vibrate) navigator.vibrate(10);
+
+    await syncScoreToCloud();
+  }
+
+  function handleFeed() {
+    if (nodes < FEED_COST) return;
+
+    nodes -= FEED_COST;
+    petEng = clampStat(petEng + FEED_RESTORE);
+    updateUI();
+    syncScoreToCloud();
+  }
+
+  function handleHydrate() {
+    if (nodes < DRINK_COST) return;
+
+    nodes -= DRINK_COST;
+    petHyd = clampStat(petHyd + DRINK_RESTORE);
+    updateUI();
+    syncScoreToCloud();
+  }
+
+  function startIdleLoop() {
+    setInterval(() => {
+      petEng = clampStat(petEng - 1);
+      petHyd = clampStat(petHyd - 1.5);
+
+      if (premium.autoFeeder && petEng < 40 && nodes >= FEED_COST) {
+        handleFeed();
+      }
+
+      updateUI();
+    }, 8000);
+  }
+
+  function setupPetInteractions() {
+    if (petStage) {
+      petStage.addEventListener("click", handlePetTap);
+      petStage.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handlePetTap();
+        }
+      });
+    }
+
+    if (btnFeed) btnFeed.addEventListener("click", handleFeed);
+    if (btnHydrate) btnHydrate.addEventListener("click", handleHydrate);
   }
 
   async function initApp() {
     await fetchUserScore();
+    updateUI();
     setupInviteButton();
     setupNavigation();
+    setupPetInteractions();
+    startIdleLoop();
   }
 
   initTelegram();
