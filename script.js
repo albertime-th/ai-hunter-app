@@ -27,22 +27,19 @@
     localStorage.setItem("ai_hunter_player_id", playerId);
   }
 
+  // ==================== GLOBAL REFERRAL SYSTEM ====================
+
   function getReferralParam() {
-    const params = new URLSearchParams(window.location.search);
-    const fromUrl = params.get("ref") || params.get("referrer");
-    if (fromUrl) return fromUrl;
+    const urlParams = new URLSearchParams(window.location.search);
+    let ref = urlParams.get("ref");
 
-    const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param;
-    if (startParam?.startsWith("ref_")) {
-      return startParam.slice(4);
+    if (window.Telegram && window.Telegram.WebApp) {
+      const initDataUnsafe = window.Telegram.WebApp.initDataUnsafe;
+      if (initDataUnsafe && initDataUnsafe.start_param) {
+        ref = initDataUnsafe.start_param;
+      }
     }
-
-    return null;
-  }
-
-  function getInviteLink() {
-    const base = `${window.location.origin}${window.location.pathname}`;
-    return `${base}?ref=${encodeURIComponent(playerId)}`;
+    return ref;
   }
 
   function initTelegram() {
@@ -81,73 +78,59 @@
   async function fetchUserScore() {
     if (!supabase) return;
 
-    const urlReferrer = getReferralParam();
-    if (urlReferrer && urlReferrer !== playerId) {
-      localStorage.setItem("ai_hunter_referred_by", urlReferrer);
-    }
-    const referredBy = localStorage.getItem("ai_hunter_referred_by");
+    const referrerId = getReferralParam();
 
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("clicks")
-        .select("score, referred_by")
+        .select("*")
         .eq("player_id", playerId)
         .single();
 
-      if (data) {
-        nodes = data.score ?? 0;
-        updateUI();
-        return;
+      if (!data) {
+        const initialData = {
+          player_id: playerId,
+          score: 0,
+          last_clicked_at: new Date().toISOString(),
+        };
+
+        if (referrerId && referrerId !== playerId) {
+          initialData.referred_by = referrerId;
+          console.log(`[Referral] Master ID linked: ${referrerId}`);
+        }
+
+        await supabase.from("clicks").insert(initialData);
+        nodes = 0;
+      } else {
+        nodes = data.score;
       }
 
-      if (error && error.code !== "PGRST116") {
-        console.log("新玩家或离线模式");
-        return;
-      }
-
-      const payload = {
-        player_id: playerId,
-        score: 0,
-        last_clicked_at: new Date().toISOString(),
-      };
-
-      if (referredBy && referredBy !== playerId) {
-        payload.referred_by = referredBy;
-      }
-
-      await supabase.from("clicks").upsert(payload, { onConflict: "player_id" });
+      updateUI();
+      updateLeaderboard();
     } catch (e) {
-      console.log("新玩家或离线模式");
+      console.log("[System] Profile synced or operating in offline mode.");
     }
   }
 
   function setupInviteButton() {
-    const btn = document.getElementById("invite-btn");
-    if (!btn) return;
+    const inviteBtn = document.getElementById("invite-btn");
+    if (inviteBtn) {
+      inviteBtn.addEventListener("click", () => {
+        const inviteUrl = `https://albertime-th.github.io/ai-hunter-app/?ref=${playerId}`;
 
-    btn.addEventListener("click", async () => {
-      const link = getInviteLink();
-      const shareText =
-        "加入 Nakamura AI Hunter！点击链接为我助力，你也斩获 500 算力 ⚡";
-      const tg = window.Telegram?.WebApp;
-
-      if (tg?.openTelegramLink) {
-        const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(shareText)}`;
-        tg.openTelegramLink(shareUrl);
-        return;
-      }
-
-      try {
-        await navigator.clipboard.writeText(`${shareText}\n${link}`);
-        const originalText = btn.textContent;
-        btn.textContent = "✅ 链接已复制！快去分享";
-        setTimeout(() => {
-          btn.textContent = originalText;
-        }, 2000);
-      } catch (e) {
-        window.prompt("复制邀请链接：", link);
-      }
-    });
+        if (window.Telegram && window.Telegram.WebApp) {
+          const tgText =
+            "🔥 Join my Hunter Squad in AI Hunter App, secure nodes, and claim your +500 Node bonus instantly!";
+          window.Telegram.WebApp.openTelegramLink(
+            `https://t.me/share/url?url=${encodeURIComponent(inviteUrl)}&text=${encodeURIComponent(tgText)}`
+          );
+        } else {
+          navigator.clipboard.writeText(inviteUrl).then(() => {
+            alert("🛸 Referral link copied to clipboard!");
+          });
+        }
+      });
+    }
   }
 
   async function updateLeaderboard() {
@@ -168,7 +151,7 @@
           .map((player, index) => {
             const isSelf = player.player_id === playerId;
             const displayName = isSelf
-              ? `👑 ${player.player_id} (你)`
+              ? `👑 ${player.player_id} (YOU)`
               : `👤 ${player.player_id}`;
 
             return `
@@ -182,7 +165,7 @@
           .join("");
       }
     } catch (e) {
-      console.error("排行榜拉取失败:", e.message);
+      console.error("[Leaderboard Sync Error]:", e.message);
     }
   }
 
@@ -203,12 +186,10 @@
   }
 
   const handleTap = async () => {
-    // 本地先 +1，界面立即响应
     nodes++;
     if (typeof updateUI === "function") updateUI();
     if (typeof spawnPlusOne === "function") spawnPlusOne();
 
-    // 再将累计总分同步到云端
     try {
       if (supabase) {
         const { error } = await supabase
@@ -225,7 +206,7 @@
         if (!error) updateLeaderboard();
       }
     } catch (e) {
-      console.error("Sync deferred.");
+      console.error("[Sync Error]: Update deferred.");
     }
   };
 
@@ -252,7 +233,6 @@
 
   async function initApp() {
     await fetchUserScore();
-    updateLeaderboard();
     setupInviteButton();
   }
 
