@@ -18,7 +18,7 @@
   <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
 </head>
 <body>
-  <div id="app-container" class="cyber-pet-atelier">
+  <div id="app-container" class="cyber-pet-atelier theme-black">
     <header class="app-header-bar">
       <div id="logo-text" class="logo-area">NAKAMURA</div>
       <div class="lang-selector-wrapper">
@@ -91,19 +91,31 @@
           <div class="referral-area">
             <button type="button" id="btn-recruit" class="recruit-btn">🔗 RECRUIT SQUAD (+500 NODES)</button>
           </div>
-
-          <section class="embedded-leaderboard">
-            <h4 id="rank-title">GLOBAL RANKINGS</h4>
-            <div id="leaderboard-list" class="mini-rank-list-scrollable">
-              <div class="rank-item loading">Synchronizing...</div>
-            </div>
-          </section>
         </div>
       </div>
 
       <div id="view-missions" class="app-view" style="display: none;">
-        <div class="mission-card"><h5>Follow X (Twitter)</h5><p>+200 Nodes</p></div>
-        <div class="mission-card"><h5>Join Telegram Channel</h5><p>+300 Nodes</p></div>
+        <div id="rank-toggle-entrance" class="mission-card rank-entrance-style">
+          <div class="entrance-flex">
+            <h5 id="rank-menu-title">🏆 GLOBAL RANKINGS</h5>
+            <span class="arrow-indicator">👉 CLICK TO OPEN</span>
+          </div>
+        </div>
+
+        <div id="normal-missions-group">
+          <div class="mission-card"><h5>Follow X (Twitter)</h5><p>+200 Nodes</p></div>
+          <div class="mission-card"><h5>Join Telegram Channel</h5><p>+300 Nodes</p></div>
+        </div>
+
+        <div id="global-rankings-fullscreen-panel" style="display: none;">
+          <div class="rank-panel-header">
+            <span id="btn-close-rankings" class="back-arrow">⬅️ BACK</span>
+            <h4 id="rank-panel-title">GLOBAL LEADERBOARD</h4>
+          </div>
+          <div id="leaderboard-list" class="infinite-scroll-rank-container">
+            <div class="rank-item big-item loading">Synchronizing...</div>
+          </div>
+        </div>
       </div>
 
       <div id="view-settings" class="app-view" style="display: none;">
@@ -116,6 +128,16 @@
           <div class="setting-row">
             <span id="set-p-2">VeraCrypt Drive Status</span>
             <span class="setting-val setting-val--rose">LOCKED (O:)</span>
+          </div>
+          <div class="setting-row theme-selector-row">
+            <span id="set-theme-label">🎨 BACKGROUND COLOR</span>
+            <select id="theme-color-dropdown" class="cyber-select">
+              <option value="black">Black (Dark)</option>
+              <option value="white">White (Light)</option>
+              <option value="gray">Gray (Tech)</option>
+              <option value="pink">Pink (Cute)</option>
+              <option value="green">Light Green (Fresh)</option>
+            </select>
           </div>
         </div>
         <button type="button" id="btn-release-pet" class="release-action-btn">💔 RELEASE COMPANION</button>

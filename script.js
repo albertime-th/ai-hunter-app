@@ -1,5 +1,5 @@
 /**
- * AI Hunter Master — HP · Welcome Bubble · Release · Supabase
+ * AI Hunter Master — Themes · Missions Rankings · Release Reset · Supabase
  */
 (function () {
   "use strict";
@@ -14,7 +14,6 @@
       missions: "MISSIONS",
       settings: "SETTINGS",
       chooseTitle: "CHOOSE YOUR COMPANION",
-      rankTitle: "GLOBAL RANKINGS",
       nodeLabel: "NODES COLLECTED",
       tplText: "TAP COMPANION TO MINE",
       langBtn: "🌐 LANG",
@@ -30,6 +29,10 @@
       drinkBtnText: "💧 WATER (-1)",
       feedBubble: "Yummy! 🍖",
       drinkBubble: "Refreshing! 💧",
+      themeLabel: "🎨 BACKGROUND COLOR",
+      rankEntrance: "🏆 GLOBAL RANKINGS",
+      rankClickOpen: "👉 CLICK TO OPEN",
+      rankPanelTitle: "GLOBAL LEADERBOARD",
     },
     hi: {
       logo: "नाकामुरा",
@@ -40,7 +43,6 @@
       missions: "मिशन",
       settings: "सेटिंग्स",
       chooseTitle: "अपना साथी चुनें",
-      rankTitle: "वैश्विक रैंकिंग",
       nodeLabel: "नोड्स एकत्र किए गए",
       tplText: "माइन करने के लिए साथी पर टैप करें",
       langBtn: "🌐 भाषा",
@@ -55,6 +57,10 @@
       drinkBtnText: "💧 पानी (-1)",
       feedBubble: "स्वादिष्ट! 🍖",
       drinkBubble: "तरोताज़ा! 💧",
+      themeLabel: "🎨 पृष्ठभूमि का रंग",
+      rankEntrance: "🏆 वैश्विक रैंकिंग",
+      rankClickOpen: "👉 खोलने के लिए क्लिक करें",
+      rankPanelTitle: "वैश्विक लीडरबोर्ड",
     },
     ru: {
       logo: "NAKAMURA",
@@ -65,7 +71,6 @@
       missions: "МИССИИ",
       settings: "НАСТРОЙКИ",
       chooseTitle: "ВЫБЕРИТЕ СПУТНИКА",
-      rankTitle: "ГЛОБАЛЬНЫЙ РЕЙТИНГ",
       nodeLabel: "НОДОВ СОБРАНО",
       tplText: "НАЖМИТЕ ДЛЯ МАЙНИНГА",
       langBtn: "🌐 ЯЗЫК",
@@ -81,6 +86,10 @@
       drinkBtnText: "💧 ВОДА (-1)",
       feedBubble: "Вкусно! 🍖",
       drinkBubble: "Освежает! 💧",
+      themeLabel: "🎨 ЦВЕТ ФОНА",
+      rankEntrance: "🏆 ГЛОБАЛЬНЫЙ РЕЙТИНГ",
+      rankClickOpen: "👉 НАЖМИТЕ, ЧТОБЫ ОТКРЫТЬ",
+      rankPanelTitle: "ГЛОБАЛЬНАЯ ТАБЛИЦА ЛИДЕРОВ",
     },
     pt: {
       logo: "NAKAMURA",
@@ -91,7 +100,6 @@
       missions: "MISSÕES",
       settings: "OPÇÕES",
       chooseTitle: "ESCOLHA SEU COMPANHEIRO",
-      rankTitle: "RANKING GLOBAL",
       nodeLabel: "NODES COLETADOS",
       tplText: "TOQUE PARA MINERAR",
       langBtn: "🌐 IDIOMA",
@@ -107,6 +115,10 @@
       drinkBtnText: "💧 ÁGUA (-1)",
       feedBubble: "Delicioso! 🍖",
       drinkBubble: "Refrescante! 💧",
+      themeLabel: "🎨 COR DE FUNDO",
+      rankEntrance: "🏆 RANKING GLOBAL",
+      rankClickOpen: "👉 CLIQUE PARA ABRIR",
+      rankPanelTitle: "TABELA DE LÍDERES GLOBAL",
     },
     uk: {
       logo: "NAKAMURA",
@@ -117,9 +129,8 @@
       missions: "МІСІЇ",
       settings: "НАЛАШТУВАННЯ",
       chooseTitle: "ВИБЕРІТЬ СУПУТНИКА",
-      rankTitle: "ГЛОБАЛЬНИЙ РЕЙТИНГ",
       nodeLabel: "НОДІВ ЗІБРАНО",
-      tplText: "НАТИСНІТЬ ДЛЯ МАЙНІНГУ",
+      tplText: "НАТИСНИТЬ ДЛЯ МАЙНІНГУ",
       langBtn: "🌐 МОВА",
       set_title: "НАЛАШТУВАННЯ",
       set_privacy: "Конфіденційність",
@@ -133,6 +144,10 @@
       drinkBtnText: "💧 ВОДА (-1)",
       feedBubble: "Смачно! 🍖",
       drinkBubble: "Освіжає! 💧",
+      themeLabel: "🎨 КОЛІР ФОНУ",
+      rankEntrance: "🏆 ГЛОБАЛЬНИЙ РЕЙТИНГ",
+      rankClickOpen: "👉 НАТИСНИТЬ, ЩОБ ВІДКРИТИ",
+      rankPanelTitle: "ГЛОБАЛЬНА ТАБЛИЦЯ ЛІДЕРІВ",
     },
     id: {
       logo: "NAKAMURA",
@@ -143,7 +158,6 @@
       missions: "MISI",
       settings: "PENGATURAN",
       chooseTitle: "PILIH PENDAMPING ANDA",
-      rankTitle: "PERINGKAT GLOBAL",
       nodeLabel: "NODE DIKUMPULKAN",
       tplText: "KETUK UNTUK MENAMBANG",
       langBtn: "🌐 BAHASA",
@@ -159,6 +173,10 @@
       drinkBtnText: "💧 MINUM (-1)",
       feedBubble: "Enak! 🍖",
       drinkBubble: "Segar! 💧",
+      themeLabel: "🎨 WARNA LATAR",
+      rankEntrance: "🏆 PERINGKAT GLOBAL",
+      rankClickOpen: "👉 KLIK UNTUK MEMBUKA",
+      rankPanelTitle: "PAPAN PERINGKAT GLOBAL",
     },
   };
 
@@ -182,10 +200,14 @@
   }
 
   const legacy = loadLegacyPetState();
+  const storedNodes = localStorage.getItem("userNodes");
 
   const appState = {
     currentLang: localStorage.getItem("appLang") || "en",
-    nodes: parseInt(localStorage.getItem("userNodes"), 10) || 0,
+    nodes:
+      storedNodes === "0"
+        ? 0
+        : parseInt(storedNodes, 10) || 0,
     hasSelectedPet:
       localStorage.getItem("hasSelectedPet") === "true" ||
       legacy?.hasPet === true,
@@ -195,6 +217,7 @@
       parseInt(localStorage.getItem("petHP"), 10) ||
       legacy?.energy ||
       100,
+    currentTheme: localStorage.getItem("appTheme") || "black",
   };
 
   let playerId = localStorage.getItem("ai_hunter_player_id");
@@ -320,7 +343,7 @@
 
   async function fetchUserScore() {
     if (!supabase) {
-      if (!localStorage.getItem("userNodes") && appState.nodes === 0) {
+      if (storedNodes === null && appState.nodes === 0) {
         appState.nodes = 500;
         saveStateToLocal();
       }
@@ -339,7 +362,7 @@
       if (!data) {
         const initialData = {
           player_id: playerId,
-          score: appState.nodes || 500,
+          score: storedNodes === "0" ? 0 : appState.nodes || 500,
           last_clicked_at: new Date().toISOString(),
         };
         if (referrerId && referrerId !== playerId) {
@@ -347,13 +370,12 @@
         }
         await supabase.from("clicks").insert(initialData);
         appState.nodes = initialData.score;
-      } else {
+      } else if (storedNodes !== "0") {
         appState.nodes = data.score;
       }
 
       saveStateToLocal();
       updateUI();
-      updateLeaderboard();
     } catch {
       updateUI();
     }
@@ -366,7 +388,7 @@
     try {
       if (!supabase) {
         listElement.innerHTML =
-          '<div class="rank-item loading">Offline — Supabase unavailable.</div>';
+          '<div class="rank-item big-item loading">Offline — Supabase unavailable.</div>';
         return;
       }
 
@@ -374,13 +396,13 @@
         .from("clicks")
         .select("player_id, score")
         .order("score", { ascending: false })
-        .limit(10);
+        .limit(50);
 
       if (error) throw error;
 
       if (!data || data.length === 0) {
         listElement.innerHTML =
-          '<div class="rank-item loading">No hunters on the board yet.</div>';
+          '<div class="rank-item big-item loading">No hunters on the board yet.</div>';
         return;
       }
 
@@ -388,12 +410,71 @@
         .map((player, index) => {
           const isSelf = player.player_id === playerId;
           const name = isSelf ? `${player.player_id} (YOU)` : player.player_id;
-          return `<div class="rank-item${isSelf ? " active-player" : ""}"><span>${index + 1}. ${name}</span><span>${player.score.toLocaleString()}</span></div>`;
+          return `<div class="rank-item big-item${isSelf ? " active-player" : ""}"><span>${index + 1}. ${name}</span><span>${player.score.toLocaleString()}</span></div>`;
         })
         .join("");
     } catch {
       listElement.innerHTML =
-        '<div class="rank-item loading">Sync failed.</div>';
+        '<div class="rank-item big-item loading">Sync failed.</div>';
+    }
+  }
+
+  function applyThemeSkin(themeName) {
+    appState.currentTheme = themeName;
+    localStorage.setItem("appTheme", themeName);
+
+    const container = document.getElementById("app-container");
+    if (!container) return;
+
+    container.classList.remove(
+      "theme-black",
+      "theme-white",
+      "theme-gray",
+      "theme-pink",
+      "theme-green"
+    );
+    container.classList.add(`theme-${themeName}`);
+  }
+
+  function setupThemeDropdownListener() {
+    const dropdown = document.getElementById("theme-color-dropdown");
+    if (!dropdown) return;
+
+    dropdown.value = appState.currentTheme;
+    dropdown.addEventListener("change", (e) => {
+      applyThemeSkin(e.target.value);
+    });
+  }
+
+  function resetMissionsRankPanel() {
+    const rankPanel = document.getElementById("global-rankings-fullscreen-panel");
+    const normalGroup = document.getElementById("normal-missions-group");
+    const entrance = document.getElementById("rank-toggle-entrance");
+    if (rankPanel) rankPanel.style.display = "none";
+    if (normalGroup) normalGroup.style.display = "block";
+    if (entrance) entrance.style.display = "block";
+  }
+
+  function setupMissionsRankLogic() {
+    const entranceBtn = document.getElementById("rank-toggle-entrance");
+    const closeBtn = document.getElementById("btn-close-rankings");
+    const normalGroup = document.getElementById("normal-missions-group");
+    const rankPanel = document.getElementById("global-rankings-fullscreen-panel");
+
+    if (entranceBtn && rankPanel && normalGroup) {
+      entranceBtn.addEventListener("click", () => {
+        normalGroup.style.display = "none";
+        entranceBtn.style.display = "none";
+        rankPanel.style.display = "flex";
+        updateLeaderboard();
+      });
+    }
+
+    if (closeBtn && rankPanel && normalGroup && entranceBtn) {
+      closeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        resetMissionsRankPanel();
+      });
     }
   }
 
@@ -419,7 +500,6 @@
     setText("btn-recruit", dict.recruit);
     setText("lang-toggle-btn", dict.langBtn);
     setText("choose-title", dict.chooseTitle);
-    setText("rank-title", dict.rankTitle);
     setText("settings-title", dict.set_title);
     setText("set-p-1", dict.set_privacy);
     setText("set-p-2", dict.set_crypto);
@@ -427,6 +507,12 @@
     setText("lbl-hp", dict.healthLabel);
     setText("btn-feed", dict.feedBtnText);
     setText("btn-drink", dict.drinkBtnText);
+    setText("set-theme-label", dict.themeLabel);
+    setText("rank-menu-title", dict.rankEntrance);
+    setText("rank-panel-title", dict.rankPanelTitle);
+
+    const arrow = document.querySelector(".arrow-indicator");
+    if (arrow) arrow.textContent = dict.rankClickOpen;
 
     const nodesLabel = document.querySelector(".nodes-label");
     if (nodesLabel) nodesLabel.textContent = dict.nodeLabel;
@@ -500,9 +586,8 @@
         saveStateToLocal();
 
         showGrowthStage();
-        renderHPBar();
+        updateUI();
         triggerBubbleWithTimeout(i18n[appState.currentLang].welcomeHome, 5000);
-        updateLeaderboard();
       });
     });
 
@@ -557,7 +642,9 @@
       releaseBtn.addEventListener("click", () => {
         if (!appState.hasSelectedPet) return;
 
-        document.querySelectorAll(".nav-tab").forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".nav-tab").forEach((t) =>
+          t.classList.remove("active")
+        );
         const gameTab = document.getElementById("btn-nav-game");
         if (gameTab) gameTab.classList.add("active");
 
@@ -577,11 +664,12 @@
           0
         );
 
-        setTimeout(() => {
+        setTimeout(async () => {
           appState.hasSelectedPet = false;
           appState.selectedPetEmoji = "🐱";
           appState.selectedPetName = "Ragdoll";
           appState.hp = 100;
+          appState.nodes = 0;
 
           localStorage.removeItem("hasSelectedPet");
           localStorage.removeItem("selectedPetEmoji");
@@ -591,10 +679,14 @@
           localStorage.removeItem("ai_hunter_pet_state");
           localStorage.removeItem("petFood");
           localStorage.removeItem("petWater");
+          localStorage.setItem("userNodes", "0");
+
+          updateUI();
 
           const bubble = document.getElementById("pet-dialog-bubble");
           if (bubble) bubble.style.display = "none";
           showSelectionStage();
+          await syncScoreToCloud();
         }, 4500);
       });
     }
@@ -633,7 +725,9 @@
       if (!tab) return;
 
       tab.addEventListener("click", () => {
-        document.querySelectorAll(".nav-tab").forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".nav-tab").forEach((t) =>
+          t.classList.remove("active")
+        );
         tab.classList.add("active");
 
         document.querySelectorAll(".app-view").forEach((view) => {
@@ -644,7 +738,12 @@
         const activeView = document.getElementById(viewId);
         if (activeView) {
           activeView.classList.add("active");
-          activeView.style.display = viewId === "view-game" ? "block" : "flex";
+          activeView.style.display =
+            viewId === "view-game" ? "block" : "flex";
+        }
+
+        if (viewId === "view-missions") {
+          resetMissionsRankPanel();
         }
 
         if (viewId === "view-game") {
@@ -693,14 +792,16 @@
   async function initApp() {
     initTelegram();
     applyLanguage(appState.currentLang);
+    applyThemeSkin(appState.currentTheme);
     setupLanguageDropdown();
     setupNavigationTabs();
     setupPetSystem();
     setupRecruitButton();
+    setupThemeDropdownListener();
+    setupMissionsRankLogic();
 
     await fetchUserScore();
     bootstrapReturningPlayer();
-    updateLeaderboard();
     saveStateToLocal();
   }
 

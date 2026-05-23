@@ -1,4 +1,4 @@
-/* AI Hunter Master — 绝对居中宠物 · 右侧气泡 · 局部滚动榜 */
+/* AI Hunter Master — 五主题皮肤 · 全屏排行榜沙盒 */
 
 :root {
   --safe-top: env(safe-area-inset-top, 0px);
@@ -21,13 +21,16 @@ body {
 }
 
 body {
-  background-color: #110d0e;
+  background-color: #0b0809;
   color: #ffffff;
   font-family: "Orbitron", sans-serif;
   touch-action: manipulation;
   user-select: none;
 }
 
+/* ==========================================
+   🎨 五大主题皮肤
+   ========================================== */
 #app-container.cyber-pet-atelier,
 .cyber-pet-atelier {
   display: flex;
@@ -36,15 +39,108 @@ body {
   height: 100dvh;
   max-width: 480px;
   margin: 0 auto;
-  background: #161213;
   position: relative;
   overflow: hidden;
-  border-left: 1px solid rgba(255, 133, 162, 0.1);
-  border-right: 1px solid rgba(255, 133, 162, 0.1);
+  transition: background 0.3s ease, color 0.3s ease;
   padding-top: var(--safe-top);
   padding-bottom: var(--safe-bottom);
 }
 
+.cyber-pet-atelier.theme-black {
+  background: #161213;
+  color: #ffffff;
+}
+.cyber-pet-atelier.theme-black .app-header-bar,
+.cyber-pet-atelier.theme-black #app-navigation {
+  background: #110d0e;
+}
+.cyber-pet-atelier.theme-black .mission-card,
+.cyber-pet-atelier.theme-black .settings-box {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 133, 162, 0.15);
+}
+
+.cyber-pet-atelier.theme-white {
+  background: #fdfbfb;
+  color: #2c3e50;
+}
+.cyber-pet-atelier.theme-white .app-header-bar,
+.cyber-pet-atelier.theme-white #app-navigation {
+  background: #f5f7fa;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+.cyber-pet-atelier.theme-white .logo-area,
+.cyber-pet-atelier.theme-white #nodes-val {
+  color: #e91e63;
+}
+.cyber-pet-atelier.theme-white .mission-card,
+.cyber-pet-atelier.theme-white .settings-box {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+.cyber-pet-atelier.theme-white .setting-row,
+.cyber-pet-atelier.theme-white .rank-item {
+  color: #515d6b;
+}
+.cyber-pet-atelier.theme-white .hint-text,
+.cyber-pet-atelier.theme-white .title-sub,
+.cyber-pet-atelier.theme-white .nodes-label {
+  color: #7f8c8d;
+}
+
+.cyber-pet-atelier.theme-gray {
+  background: #34495e;
+  color: #ecf0f1;
+}
+.cyber-pet-atelier.theme-gray .app-header-bar,
+.cyber-pet-atelier.theme-gray #app-navigation {
+  background: #2c3e50;
+}
+.cyber-pet-atelier.theme-gray .mission-card,
+.cyber-pet-atelier.theme-gray .settings-box {
+  background: rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.cyber-pet-atelier.theme-pink {
+  background: #ffe4e1;
+  color: #8b4513;
+}
+.cyber-pet-atelier.theme-pink .app-header-bar,
+.cyber-pet-atelier.theme-pink #app-navigation {
+  background: #ffb6c1;
+}
+.cyber-pet-atelier.theme-pink .logo-area,
+.cyber-pet-atelier.theme-pink #nodes-val,
+.cyber-pet-atelier.theme-pink .arrow-indicator {
+  color: #d02090;
+}
+.cyber-pet-atelier.theme-pink .mission-card,
+.cyber-pet-atelier.theme-pink .settings-box {
+  background: #ffffff;
+  border-color: #ffc0cb;
+}
+
+.cyber-pet-atelier.theme-green {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+.cyber-pet-atelier.theme-green .app-header-bar,
+.cyber-pet-atelier.theme-green #app-navigation {
+  background: #c8e6c9;
+}
+.cyber-pet-atelier.theme-green .logo-area,
+.cyber-pet-atelier.theme-green #nodes-val {
+  color: #2e7d32;
+}
+.cyber-pet-atelier.theme-green .mission-card,
+.cyber-pet-atelier.theme-green .settings-box {
+  background: #ffffff;
+  border-color: #a5d6a7;
+}
+
+/* 通用骨架 */
 .app-header-bar {
   flex-shrink: 0;
   height: 55px;
@@ -52,8 +148,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  background: #110d0e;
-  border-bottom: 1px solid rgba(255, 183, 183, 0.1);
+  border-bottom: 1px solid rgba(150, 150, 150, 0.1);
+  z-index: 10;
 }
 
 .logo-area {
@@ -129,7 +225,11 @@ body {
 
 #view-missions,
 #view-settings {
-  padding: 20px;
+  padding: 15px;
+  overflow: hidden;
+}
+
+#view-settings {
   overflow-y: auto;
 }
 
@@ -165,8 +265,6 @@ body {
   font-size: 1.1rem;
   font-family: "Orbitron", sans-serif;
   cursor: pointer;
-  box-shadow: 0 8px 25px rgba(255, 183, 183, 0.3);
-  letter-spacing: 0.06em;
 }
 
 #btn-select-pet:active {
@@ -194,7 +292,6 @@ body {
   margin-bottom: 15px;
   flex-shrink: 0;
   text-align: center;
-  letter-spacing: 0.1em;
 }
 
 .pet-grid {
@@ -216,12 +313,6 @@ body {
   padding: 15px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.pet-card:active {
-  border-color: #ff85a2;
-  background: rgba(255, 133, 162, 0.05);
 }
 
 .pet-card span {
@@ -236,7 +327,6 @@ body {
   font-weight: bold;
 }
 
-/* 🪐 养成舞台 */
 #pet-growth-stage {
   display: flex;
   flex-direction: column;
@@ -246,10 +336,9 @@ body {
   overflow: hidden;
 }
 
-/* 🎖️ 左上角唯一 HP 面板 */
 .pet-single-hp-panel {
   width: 130px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 71, 87, 0.3);
   border-radius: 8px;
   padding: 6px;
@@ -258,20 +347,18 @@ body {
   gap: 6px;
   align-self: flex-start;
   flex-shrink: 0;
-  z-index: 5;
 }
 
 .hp-label {
   font-size: 0.65rem;
   color: #ff4757;
   font-weight: bold;
-  flex-shrink: 0;
 }
 
 .hp-bar-bg {
   flex: 1;
   height: 6px;
-  background: #221a1c;
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -284,13 +371,10 @@ body {
 
 .hp-val {
   font-size: 0.65rem;
-  color: #fff;
   font-weight: bold;
-  flex-shrink: 0;
   font-variant-numeric: tabular-nums;
 }
 
-/* 🎯 绝对定位中枢 */
 .pet-stage-center-container {
   position: relative;
   width: 100%;
@@ -298,7 +382,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0;
+  margin: 15px 0;
   flex-shrink: 0;
 }
 
@@ -308,7 +392,6 @@ body {
   cursor: pointer;
   z-index: 5;
   animation: float 2s ease-in-out infinite;
-  filter: drop-shadow(0 0 12px rgba(255, 133, 162, 0.45));
 }
 
 #pet-stage.pet-bounce {
@@ -337,11 +420,10 @@ body {
   }
 }
 
-/* 💬 右侧对话气泡 */
 .speech-bubble-right {
   position: absolute;
-  left: 62%;
-  top: 10px;
+  left: 63%;
+  top: 12px;
   background: linear-gradient(135deg, #fff5f5, #ffe3e3);
   border: 1px solid #ffb7b7;
   color: #ff6b6b;
@@ -351,10 +433,8 @@ body {
   font-size: 0.7rem;
   box-shadow: 0 4px 12px rgba(255, 183, 183, 0.25);
   z-index: 10;
-  white-space: nowrap;
   max-width: 42%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.3;
 }
 
 .speech-bubble-right::after {
@@ -378,7 +458,6 @@ body {
 .title-sub {
   font-size: 0.65rem;
   color: #7c6e70;
-  letter-spacing: 0.12em;
 }
 
 .nodes-counter {
@@ -388,29 +467,26 @@ body {
 .nodes-label {
   font-size: 0.6rem;
   color: #b5a4a4;
-  letter-spacing: 0.14em;
 }
 
 #nodes-val {
   font-size: 1.8rem;
-  color: #fff;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
 }
 
-/* 🍖 💧 照料按钮 */
 .care-action-row {
   display: flex;
   gap: 12px;
   width: 100%;
-  margin: 10px 0;
+  margin: 12px 0;
   justify-content: center;
   flex-shrink: 0;
 }
 
 .care-trigger {
   flex: 1;
-  padding: 10px;
+  padding: 11px;
   background: linear-gradient(135deg, #2c1f21, #1f1517);
   border: 1px solid rgba(255, 133, 162, 0.25);
   color: #ff85a2;
@@ -419,13 +495,10 @@ body {
   font-size: 0.75rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.04em;
 }
 
 .care-trigger:active:not(:disabled) {
   transform: scale(0.96);
-  border-color: #ff85a2;
 }
 
 .care-trigger:disabled {
@@ -435,12 +508,13 @@ body {
 
 .referral-area {
   width: 100%;
+  margin-bottom: 10px;
   flex-shrink: 0;
 }
 
 .recruit-btn {
   width: 100%;
-  padding: 10px;
+  padding: 11px;
   background: #111a19;
   border: 1px solid #a0e7e5;
   color: #a0e7e5;
@@ -449,70 +523,10 @@ body {
   font-weight: bold;
   font-family: "Orbitron", sans-serif;
   cursor: pointer;
-  letter-spacing: 0.06em;
-}
-
-.recruit-btn:active {
-  transform: scale(0.98);
-}
-
-/* 排行榜局部内滑动 */
-.embedded-leaderboard {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
-  padding: 10px;
-  margin-top: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.02);
-  flex-shrink: 0;
-}
-
-.embedded-leaderboard h4 {
-  font-size: 0.75rem;
-  color: #ff85a2;
-  margin-bottom: 4px;
-  text-align: center;
-  letter-spacing: 0.1em;
-}
-
-.mini-rank-list-scrollable {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  max-height: 90px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-}
-
-.mini-rank-list-scrollable::-webkit-scrollbar {
-  width: 0;
-  display: none;
-}
-
-.rank-item {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.7rem;
-  color: #b5a4a4;
-  padding: 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.01);
-  flex-shrink: 0;
-}
-
-.rank-item.active-player {
-  color: #ffd6e0;
-  font-weight: 700;
-}
-
-.rank-item.loading {
-  justify-content: center;
-  border-bottom: none;
-  color: #7c6e70;
 }
 
 .mission-card,
 .settings-box {
-  background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 133, 162, 0.1);
   border-radius: 12px;
   padding: 15px;
@@ -520,14 +534,13 @@ body {
 }
 
 .mission-card h5 {
-  font-size: 0.85rem;
-  color: #fff;
+  font-size: 0.8rem;
   margin-bottom: 4px;
 }
 
 .mission-card p {
   font-size: 0.75rem;
-  color: #d4af37;
+  color: #a0e7e5;
 }
 
 .setting-row {
@@ -536,12 +549,11 @@ body {
   align-items: center;
   font-size: 0.8rem;
   padding: 8px 0;
-  color: #b5a4a4;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  gap: 10px;
 }
 
-.setting-row:last-child {
-  border-bottom: none;
+.theme-selector-row {
+  flex-wrap: wrap;
 }
 
 .setting-val--mint {
@@ -550,6 +562,123 @@ body {
 
 .setting-val--rose {
   color: #ff6b6b;
+}
+
+.cyber-select {
+  background: #110d0e;
+  border: 1px solid rgba(255, 133, 162, 0.4);
+  color: #ff85a2;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.75rem;
+  outline: none;
+  cursor: pointer;
+  max-width: 140px;
+}
+
+/* 🏆 任务页排行榜 */
+.rank-entrance-style {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 133, 162, 0.1),
+    rgba(0, 0, 0, 0.1)
+  ) !important;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.rank-entrance-style:active {
+  transform: scale(1.01);
+}
+
+.entrance-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.arrow-indicator {
+  font-size: 0.7rem;
+  color: #ff85a2;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#global-rankings-fullscreen-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.rank-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(150, 150, 150, 0.1);
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.back-arrow {
+  font-size: 0.75rem;
+  color: #a0e7e5;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#rank-panel-title {
+  font-size: 0.85rem;
+  color: #ff85a2;
+  letter-spacing: 0.08em;
+}
+
+.infinite-scroll-rank-container {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 2px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.infinite-scroll-rank-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.infinite-scroll-rank-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 133, 162, 0.3);
+  border-radius: 2px;
+}
+
+.rank-item.big-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.rank-item.big-item.active-player {
+  color: #ffd6e0;
+  font-weight: 700;
+  border: 1px solid rgba(255, 133, 162, 0.25);
+}
+
+.rank-item.loading {
+  justify-content: center;
+  color: #7c6e70;
 }
 
 .release-action-btn {
@@ -564,11 +693,6 @@ body {
   font-weight: bold;
   cursor: pointer;
   margin-top: 20px;
-  letter-spacing: 0.06em;
-}
-
-.release-action-btn:active {
-  background: rgba(255, 71, 87, 0.2);
 }
 
 #app-navigation {
@@ -577,9 +701,8 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background: #110d0e;
-  border-top: 1px solid rgba(255, 183, 183, 0.1);
-  z-index: 100;
+  border-top: 1px solid rgba(150, 150, 150, 0.1);
+  z-index: 10;
 }
 
 .nav-tab {
@@ -590,7 +713,7 @@ body {
   font-size: 0.8rem;
   font-weight: bold;
   cursor: pointer;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   padding: 8px 12px;
 }
 
