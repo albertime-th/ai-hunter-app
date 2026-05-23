@@ -1,5 +1,5 @@
 /**
- * AI Hunter Master — i18n · HP/Food/Water · Release · Supabase
+ * AI Hunter Master — HP · Welcome Bubble · Release · Supabase
  */
 (function () {
   "use strict";
@@ -22,13 +22,14 @@
       set_privacy: "Privacy & Security",
       set_crypto: "VeraCrypt Drive Status",
       welcomeHome: "Welcome Home! 🌸",
-      welcomeNew: "A new bond begins! 🌸",
       releaseBtn: "💔 RELEASE COMPANION",
       releaseFarewell:
         "Thank you for the companionship along the way. May our paths cross again. 🌟",
-      foodLabel: "🍖 FOOD",
-      waterLabel: "💧 WATER",
       healthLabel: "❤️ HP",
+      feedBtnText: "🍖 FOOD (-1)",
+      drinkBtnText: "💧 WATER (-1)",
+      feedBubble: "Yummy! 🍖",
+      drinkBubble: "Refreshing! 💧",
     },
     hi: {
       logo: "नाकामुरा",
@@ -47,12 +48,13 @@
       set_privacy: "गोपनीयता और सुरक्षा",
       set_crypto: "वेराक्रिप्ट ड्राइव स्थिति",
       welcomeHome: "घर वापसी पर स्वागत है! 🌸",
-      welcomeNew: "एक नया बंधन शुरू! 🌸",
       releaseBtn: "💔 साथी को आज़ाद करें",
       releaseFarewell: "इस रास्ते में साथ देने के लिए धन्यवाद। फिर मिलेंगे। 🌟",
-      foodLabel: "🍖 भोजन",
-      waterLabel: "💧 पानी",
       healthLabel: "❤️ स्वास्थ्य",
+      feedBtnText: "🍖 भोजन (-1)",
+      drinkBtnText: "💧 पानी (-1)",
+      feedBubble: "स्वादिष्ट! 🍖",
+      drinkBubble: "तरोताज़ा! 💧",
     },
     ru: {
       logo: "NAKAMURA",
@@ -71,13 +73,14 @@
       set_privacy: "Конфиденциальность",
       set_crypto: "Статус VeraCrypt",
       welcomeHome: "С возвращением домой! 🌸",
-      welcomeNew: "Новая связь начинается! 🌸",
       releaseBtn: "💔 ОТПУСТИТЬ ПИТОМЦА",
       releaseFarewell:
         "Спасибо за компанию на этом пути. До новых встреч. 🌟",
-      foodLabel: "🍖 ЕДА",
-      waterLabel: "💧 ВОДА",
       healthLabel: "❤️ ЗДОРОВЬЕ",
+      feedBtnText: "🍖 ЕДА (-1)",
+      drinkBtnText: "💧 ВОДА (-1)",
+      feedBubble: "Вкусно! 🍖",
+      drinkBubble: "Освежает! 💧",
     },
     pt: {
       logo: "NAKAMURA",
@@ -96,13 +99,14 @@
       set_privacy: "Privacidade e Segurança",
       set_crypto: "Status do VeraCrypt",
       welcomeHome: "Bem-vindo de volta! 🌸",
-      welcomeNew: "Um novo vínculo começa! 🌸",
       releaseBtn: "💔 LIBERTAR COMPANHEIRO",
       releaseFarewell:
         "Obrigado pela companhia ao longo do caminho. Que nos encontremos de novo. 🌟",
-      foodLabel: "🍖 FOME",
-      waterLabel: "💧 ÁGUA",
       healthLabel: "❤️ SAÚDE",
+      feedBtnText: "🍖 FOME (-1)",
+      drinkBtnText: "💧 ÁGUA (-1)",
+      feedBubble: "Delicioso! 🍖",
+      drinkBubble: "Refrescante! 💧",
     },
     uk: {
       logo: "NAKAMURA",
@@ -121,13 +125,14 @@
       set_privacy: "Конфіденційність",
       set_crypto: "Статус VeraCrypt",
       welcomeHome: "З поверненням додому! 🌸",
-      welcomeNew: "Новий зв'язок починається! 🌸",
       releaseBtn: "💔 ВІДПУСТИТИ СУПУТНИКА",
       releaseFarewell:
         "Дякую за компанію на цьому шляху. До нових зустрічей. 🌟",
-      foodLabel: "🍖 ЇЖА",
-      waterLabel: "💧 ВОДА",
       healthLabel: "❤️ ЗДОРОВ'Я",
+      feedBtnText: "🍖 ЇЖА (-1)",
+      drinkBtnText: "💧 ВОДА (-1)",
+      feedBubble: "Смачно! 🍖",
+      drinkBubble: "Освіжає! 💧",
     },
     id: {
       logo: "NAKAMURA",
@@ -146,13 +151,14 @@
       set_privacy: "Privasi & Keamanan",
       set_crypto: "Status Drive VeraCrypt",
       welcomeHome: "Selamat datang di rumah! 🌸",
-      welcomeNew: "Ikatan baru dimulai! 🌸",
       releaseBtn: "💔 LEPASKAN PENDAMPING",
       releaseFarewell:
         "Terima kasih atas kebersamaan di sepanjang jalan. Sampai jumpa lagi. 🌟",
-      foodLabel: "🍖 MAKAN",
-      waterLabel: "💧 AIR",
       healthLabel: "❤️ HP",
+      feedBtnText: "🍖 MAKAN (-1)",
+      drinkBtnText: "💧 MINUM (-1)",
+      feedBubble: "Enak! 🍖",
+      drinkBubble: "Segar! 💧",
     },
   };
 
@@ -164,7 +170,6 @@
       ? window.supabase.createClient(supabaseUrl, supabaseKey)
       : null;
 
-  let tickerTimer = null;
   let bubbleTimer = null;
 
   function loadLegacyPetState() {
@@ -186,15 +191,10 @@
       legacy?.hasPet === true,
     selectedPetEmoji: localStorage.getItem("selectedPetEmoji") || "🐱",
     selectedPetName: localStorage.getItem("selectedPetName") || "Ragdoll",
-    hp: parseInt(localStorage.getItem("petHP"), 10) || 100,
-    food:
-      (localStorage.getItem("petFood") !== null
-        ? parseInt(localStorage.getItem("petFood"), 10)
-        : legacy?.energy) ?? 100,
-    water:
-      (localStorage.getItem("petWater") !== null
-        ? parseInt(localStorage.getItem("petWater"), 10)
-        : legacy?.hydration) ?? 100,
+    hp:
+      parseInt(localStorage.getItem("petHP"), 10) ||
+      legacy?.energy ||
+      100,
   };
 
   let playerId = localStorage.getItem("ai_hunter_player_id");
@@ -209,6 +209,8 @@
   const petStage = document.getElementById("pet-stage");
   const floatLayer = document.getElementById("float-layer");
   const nodesEl = document.getElementById("nodes-val");
+  const btnFeed = document.getElementById("btn-feed");
+  const btnDrink = document.getElementById("btn-drink");
 
   function clampStat(value) {
     return Math.max(0, Math.min(100, value));
@@ -220,16 +222,14 @@
     localStorage.setItem("selectedPetEmoji", appState.selectedPetEmoji);
     localStorage.setItem("selectedPetName", appState.selectedPetName);
     localStorage.setItem("petHP", String(appState.hp));
-    localStorage.setItem("petFood", String(appState.food));
-    localStorage.setItem("petWater", String(appState.water));
     localStorage.setItem("lastSavedTime", String(Date.now()));
     localStorage.setItem(
       "ai_hunter_pet_state",
       JSON.stringify({
         hasPet: appState.hasSelectedPet,
         selectedType: appState.selectedPetName,
-        energy: appState.food,
-        hydration: appState.water,
+        energy: appState.hp,
+        hydration: appState.hp,
       })
     );
   }
@@ -238,11 +238,42 @@
     const lastTime = localStorage.getItem("lastSavedTime");
     if (!lastTime) return;
 
-    const diffHours = (Date.now() - parseInt(lastTime, 10)) / (1000 * 60 * 60);
+    const diffHours =
+      (Date.now() - parseInt(lastTime, 10)) / (1000 * 60 * 60);
+
     if (diffHours >= 12) {
-      appState.food = Math.max(0, appState.food - 25);
-      appState.water = Math.max(0, appState.water - 30);
+      appState.hp = Math.max(0, appState.hp - 55);
       saveStateToLocal();
+    }
+  }
+
+  function renderHPBar() {
+    appState.hp = clampStat(appState.hp);
+    const fill = document.getElementById("fill-hp");
+    const val = document.getElementById("val-hp");
+    if (fill) fill.style.width = `${appState.hp}%`;
+    if (val) val.textContent = Math.round(appState.hp);
+  }
+
+  function updateUI() {
+    if (nodesEl) nodesEl.textContent = String(appState.nodes);
+    renderHPBar();
+    if (btnFeed) btnFeed.disabled = appState.nodes < 1;
+    if (btnDrink) btnDrink.disabled = appState.nodes < 1;
+  }
+
+  function triggerBubbleWithTimeout(text, duration) {
+    const bubble = document.getElementById("pet-dialog-bubble");
+    if (!bubble) return;
+
+    if (bubbleTimer) clearTimeout(bubbleTimer);
+    bubble.textContent = text;
+    bubble.style.display = "block";
+
+    if (duration > 0) {
+      bubbleTimer = setTimeout(() => {
+        bubble.style.display = "none";
+      }, duration);
     }
   }
 
@@ -283,7 +314,7 @@
       );
       updateLeaderboard();
     } catch {
-      console.warn("[Sync] Score deferred to local cache.");
+      console.warn("[Sync] Score deferred.");
     }
   }
 
@@ -360,7 +391,7 @@
           return `<div class="rank-item${isSelf ? " active-player" : ""}"><span>${index + 1}. ${name}</span><span>${player.score.toLocaleString()}</span></div>`;
         })
         .join("");
-    } catch (e) {
+    } catch {
       listElement.innerHTML =
         '<div class="rank-item loading">Sync failed.</div>';
     }
@@ -394,8 +425,8 @@
     setText("set-p-2", dict.set_crypto);
     setText("btn-release-pet", dict.releaseBtn);
     setText("lbl-hp", dict.healthLabel);
-    setText("lbl-food", dict.foodLabel);
-    setText("lbl-water", dict.waterLabel);
+    setText("btn-feed", dict.feedBtnText);
+    setText("btn-drink", dict.drinkBtnText);
 
     const nodesLabel = document.querySelector(".nodes-label");
     if (nodesLabel) nodesLabel.textContent = dict.nodeLabel;
@@ -406,64 +437,6 @@
       const labels = [dict.game, dict.missions, dict.settings];
       if (labels[i]) tab.textContent = labels[i];
     });
-  }
-
-  function setupLanguageDropdown() {
-    const btn = document.getElementById("lang-toggle-btn");
-    const menu = document.getElementById("lang-dropdown-menu");
-    if (!btn || !menu) return;
-
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    });
-
-    document.querySelectorAll(".lang-opt").forEach((opt) => {
-      opt.addEventListener("click", () => {
-        applyLanguage(opt.getAttribute("data-lang"));
-        menu.style.display = "none";
-      });
-    });
-
-    document.addEventListener("click", () => {
-      menu.style.display = "none";
-    });
-  }
-
-  function triggerBubble(text) {
-    const bubble = document.getElementById("pet-dialog-bubble");
-    if (!bubble) return;
-
-    if (bubbleTimer) clearTimeout(bubbleTimer);
-    bubble.textContent = text;
-    bubble.style.display = "block";
-    bubbleTimer = setTimeout(() => {
-      bubble.style.display = "none";
-    }, 5000);
-  }
-
-  function renderStatusBars() {
-    appState.hp = clampStat(appState.hp);
-    appState.food = clampStat(appState.food);
-    appState.water = clampStat(appState.water);
-
-    const pairs = [
-      ["fill-hp", "val-hp", appState.hp],
-      ["fill-food", "val-food", appState.food],
-      ["fill-water", "val-water", appState.water],
-    ];
-
-    pairs.forEach(([fillId, valId, val]) => {
-      const fill = document.getElementById(fillId);
-      const label = document.getElementById(valId);
-      if (fill) fill.style.width = `${val}%`;
-      if (label) label.textContent = Math.round(val);
-    });
-  }
-
-  function updateUI() {
-    if (nodesEl) nodesEl.textContent = String(appState.nodes);
-    renderStatusBars();
   }
 
   function showGrowthStage() {
@@ -480,6 +453,8 @@
       selectionStage.classList.remove("is-hidden");
       selectionStage.style.display = "flex";
     }
+    const bubble = document.getElementById("pet-dialog-bubble");
+    if (bubble) bubble.style.display = "none";
   }
 
   function spawnPlusOne(amount) {
@@ -499,23 +474,6 @@
     petStage.classList.add("pet-bounce");
   }
 
-  function startLifeTickers() {
-    if (tickerTimer) clearInterval(tickerTimer);
-
-    tickerTimer = setInterval(() => {
-      if (!appState.hasSelectedPet) return;
-      appState.food = Math.min(100, appState.food + 1);
-      appState.water = Math.min(100, appState.water + 1);
-      renderStatusBars();
-      saveStateToLocal();
-    }, 1000);
-  }
-
-  function stopLifeTickers() {
-    if (tickerTimer) clearInterval(tickerTimer);
-    tickerTimer = null;
-  }
-
   function setupPetSystem() {
     const selectPetBtn = document.getElementById("btn-select-pet");
 
@@ -523,7 +481,6 @@
       selectPetBtn.addEventListener("click", () => {
         if (appState.hasSelectedPet) {
           showGrowthStage();
-          startLifeTickers();
           return;
         }
         if (selectionStage) selectionStage.classList.add("is-hidden");
@@ -540,14 +497,11 @@
         appState.selectedPetEmoji = emoji;
         appState.selectedPetName = name;
         appState.hp = 100;
-        appState.food = 100;
-        appState.water = 100;
         saveStateToLocal();
 
         showGrowthStage();
-        triggerBubble(i18n[appState.currentLang].welcomeNew);
-        startLifeTickers();
-        updateUI();
+        renderHPBar();
+        triggerBubbleWithTimeout(i18n[appState.currentLang].welcomeHome, 5000);
         updateLeaderboard();
       });
     });
@@ -555,12 +509,9 @@
     if (petStage) {
       petStage.addEventListener("click", async () => {
         if (!appState.hasSelectedPet) return;
-        if (appState.food <= 0 || appState.water <= 0) return;
+        if (appState.hp <= 0) return;
 
         appState.nodes += 1;
-        appState.food = Math.max(0, appState.food - 1);
-        appState.water = Math.max(0, appState.water - 1);
-
         saveStateToLocal();
         updateUI();
         spawnPlusOne(1);
@@ -574,6 +525,30 @@
           e.preventDefault();
           petStage.click();
         }
+      });
+    }
+
+    if (btnFeed) {
+      btnFeed.addEventListener("click", () => {
+        if (appState.nodes < 1) return;
+        appState.nodes -= 1;
+        appState.hp = clampStat(appState.hp + 10);
+        saveStateToLocal();
+        updateUI();
+        triggerBubbleWithTimeout(i18n[appState.currentLang].feedBubble, 1500);
+        syncScoreToCloud();
+      });
+    }
+
+    if (btnDrink) {
+      btnDrink.addEventListener("click", () => {
+        if (appState.nodes < 1) return;
+        appState.nodes -= 1;
+        appState.hp = clampStat(appState.hp + 10);
+        saveStateToLocal();
+        updateUI();
+        triggerBubbleWithTimeout(i18n[appState.currentLang].drinkBubble, 1500);
+        syncScoreToCloud();
       });
     }
 
@@ -597,27 +572,28 @@
         }
 
         showGrowthStage();
-        triggerBubble(i18n[appState.currentLang].releaseFarewell);
+        triggerBubbleWithTimeout(
+          i18n[appState.currentLang].releaseFarewell,
+          0
+        );
 
         setTimeout(() => {
-          stopLifeTickers();
-
           appState.hasSelectedPet = false;
           appState.selectedPetEmoji = "🐱";
           appState.selectedPetName = "Ragdoll";
           appState.hp = 100;
-          appState.food = 100;
-          appState.water = 100;
 
           localStorage.removeItem("hasSelectedPet");
           localStorage.removeItem("selectedPetEmoji");
           localStorage.removeItem("selectedPetName");
-          localStorage.removeItem("petFood");
-          localStorage.removeItem("petWater");
           localStorage.removeItem("petHP");
           localStorage.removeItem("lastSavedTime");
           localStorage.removeItem("ai_hunter_pet_state");
+          localStorage.removeItem("petFood");
+          localStorage.removeItem("petWater");
 
+          const bubble = document.getElementById("pet-dialog-bubble");
+          if (bubble) bubble.style.display = "none";
           showSelectionStage();
         }, 4500);
       });
@@ -674,7 +650,7 @@
         if (viewId === "view-game") {
           if (appState.hasSelectedPet) {
             showGrowthStage();
-            renderStatusBars();
+            renderHPBar();
           } else {
             showSelectionStage();
           }
@@ -683,14 +659,35 @@
     });
   }
 
+  function setupLanguageDropdown() {
+    const btn = document.getElementById("lang-toggle-btn");
+    const menu = document.getElementById("lang-dropdown-menu");
+    if (!btn || !menu) return;
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
+
+    document.querySelectorAll(".lang-opt").forEach((opt) => {
+      opt.addEventListener("click", () => {
+        applyLanguage(opt.getAttribute("data-lang"));
+        menu.style.display = "none";
+      });
+    });
+
+    document.addEventListener("click", () => {
+      menu.style.display = "none";
+    });
+  }
+
   function bootstrapReturningPlayer() {
     if (!appState.hasSelectedPet) return;
 
     checkOfflineDecay();
     showGrowthStage();
-    startLifeTickers();
-    triggerBubble(i18n[appState.currentLang].welcomeHome);
-    renderStatusBars();
+    triggerBubbleWithTimeout(i18n[appState.currentLang].welcomeHome, 5000);
+    renderHPBar();
   }
 
   async function initApp() {

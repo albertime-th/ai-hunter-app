@@ -58,38 +58,34 @@
         </div>
 
         <div id="pet-growth-stage" style="display: none;">
-          <div class="pet-hud-status-panel">
-            <div class="hud-row">
-              <span id="lbl-hp" class="hud-label">❤️ HP</span>
-              <div class="hud-bar-bg"><div id="fill-hp" class="hud-fill fill-hp-color" style="width: 100%"></div></div>
-              <span id="val-hp" class="hud-val">100</span>
-            </div>
-            <div class="hud-row">
-              <span id="lbl-food" class="hud-label">🍖 FOOD</span>
-              <div class="hud-bar-bg"><div id="fill-food" class="hud-fill fill-food-color" style="width: 100%"></div></div>
-              <span id="val-food" class="hud-val">100</span>
-            </div>
-            <div class="hud-row">
-              <span id="lbl-water" class="hud-label">💧 WATER</span>
-              <div class="hud-bar-bg"><div id="fill-water" class="hud-fill fill-water-color" style="width: 100%"></div></div>
-              <span id="val-water" class="hud-val">100</span>
-            </div>
+          <div class="pet-single-hp-panel">
+            <span id="lbl-hp" class="hp-label">❤️ HP</span>
+            <div class="hp-bar-bg"><div id="fill-hp" class="hp-fill-color" style="width: 100%"></div></div>
+            <span id="val-hp" class="hp-val">100</span>
           </div>
 
-          <div class="pet-avatar-wrapper">
-            <div id="pet-dialog-bubble" class="speech-bubble" style="display: none;">Welcome Home! 🌸</div>
+          <div class="pet-stage-center-container">
             <div
               id="pet-stage"
-              class="floating-pet-core"
+              class="absolute-center-pet"
               role="button"
               tabindex="0"
               aria-label="Tap pet to earn nodes"
             >🐱</div>
+            <div id="pet-dialog-bubble" class="speech-bubble-right" style="display: none;">Welcome Home! 🌸</div>
+          </div>
+
+          <div class="stage-info-footer">
             <div class="title-sub">TAP COMPANION TO MINE</div>
             <div class="nodes-counter" aria-live="polite">
               <p class="nodes-label">NODES COLLECTED</p>
               <h2 id="nodes-val">0</h2>
             </div>
+          </div>
+
+          <div class="care-action-row">
+            <button type="button" id="btn-feed" class="care-trigger">🍖 FOOD (-1)</button>
+            <button type="button" id="btn-drink" class="care-trigger">💧 WATER (-1)</button>
           </div>
 
           <div class="referral-area">
@@ -108,11 +104,10 @@
       <div id="view-missions" class="app-view" style="display: none;">
         <div class="mission-card"><h5>Follow X (Twitter)</h5><p>+200 Nodes</p></div>
         <div class="mission-card"><h5>Join Telegram Channel</h5><p>+300 Nodes</p></div>
-        <div class="mission-card"><h5>Recruit 3 New Hunters</h5><p>+5,000 Nodes</p></div>
       </div>
 
       <div id="view-settings" class="app-view" style="display: none;">
-        <h3 id="settings-title" class="view-heading">SETTINGS</h3>
+        <h3 id="settings-title" class="settings-heading">SETTINGS</h3>
         <div class="settings-box">
           <div class="setting-row">
             <span id="set-p-1">Privacy &amp; Security</span>

@@ -1,4 +1,4 @@
-/* AI Hunter Master — Flex 三段式 · HUD · 局部滚动排行榜 */
+/* AI Hunter Master — 绝对居中宠物 · 右侧气泡 · 局部滚动榜 */
 
 :root {
   --safe-top: env(safe-area-inset-top, 0px);
@@ -133,7 +133,7 @@ body {
   overflow-y: auto;
 }
 
-.view-heading {
+.settings-heading {
   color: #ff85a2;
   margin-bottom: 20px;
   font-size: 1.2rem;
@@ -141,7 +141,6 @@ body {
   text-align: center;
 }
 
-/* 首页圆形大门 */
 #selection-stage {
   width: 100%;
   height: 100%;
@@ -180,7 +179,6 @@ body {
   margin-top: 15px;
 }
 
-/* 🐾 10大萌宠选池 */
 #pet-selection-pool {
   width: 100%;
   height: 100%;
@@ -194,9 +192,9 @@ body {
   color: #ff85a2;
   font-size: 1rem;
   margin-bottom: 15px;
-  letter-spacing: 0.1em;
-  text-align: center;
   flex-shrink: 0;
+  text-align: center;
+  letter-spacing: 0.1em;
 }
 
 .pet-grid {
@@ -221,7 +219,6 @@ body {
   transition: all 0.2s;
 }
 
-.pet-card:hover,
 .pet-card:active {
   border-color: #ff85a2;
   background: rgba(255, 133, 162, 0.05);
@@ -247,40 +244,31 @@ body {
   height: 100%;
   justify-content: space-between;
   overflow: hidden;
-  position: relative;
 }
 
-/* 🎖️ 左上角 HUD */
-.pet-hud-status-panel {
-  width: 150px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 133, 162, 0.15);
-  border-radius: 10px;
-  padding: 8px;
+/* 🎖️ 左上角唯一 HP 面板 */
+.pet-single-hp-panel {
+  width: 130px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  border-radius: 8px;
+  padding: 6px;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 6px;
   align-self: flex-start;
   flex-shrink: 0;
   z-index: 5;
 }
 
-.hud-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-}
-
-.hud-label {
-  font-size: 0.6rem;
-  color: #b5a4a4;
+.hp-label {
+  font-size: 0.65rem;
+  color: #ff4757;
   font-weight: bold;
-  width: 45px;
   flex-shrink: 0;
 }
 
-.hud-bar-bg {
+.hp-bar-bg {
   flex: 1;
   height: 6px;
   background: #221a1c;
@@ -288,91 +276,38 @@ body {
   overflow: hidden;
 }
 
-.hud-fill {
+.hp-fill-color {
   height: 100%;
+  background: #ff4757;
   transition: width 0.2s ease;
 }
 
-.fill-hp-color {
-  background: #ff4757;
-}
-
-.fill-food-color {
-  background: #ff85a2;
-}
-
-.fill-water-color {
-  background: #a0e7e5;
-}
-
-.hud-val {
-  font-size: 0.6rem;
+.hp-val {
+  font-size: 0.65rem;
   color: #fff;
-  width: 22px;
-  text-align: right;
+  font-weight: bold;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
 }
 
-/* 💬 对话气泡 */
-.pet-avatar-wrapper {
-  text-align: center;
+/* 🎯 绝对定位中枢 */
+.pet-stage-center-container {
   position: relative;
-  margin: 6px 0;
-  flex: 1;
-  min-height: 0;
+  width: 100%;
+  height: 140px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.speech-bubble {
-  position: relative;
-  background: linear-gradient(135deg, #fff5f5, #ffe3e3);
-  border: 1px solid #ffb7b7;
-  color: #ff6b6b;
-  font-weight: bold;
-  padding: 8px 14px;
-  border-radius: 14px;
-  font-size: 0.75rem;
-  margin-bottom: 12px;
-  box-shadow: 0 5px 15px rgba(255, 183, 183, 0.2);
-  animation: bubbleFloat 2s ease-in-out infinite;
-  max-width: 90%;
-  line-height: 1.4;
-}
-
-.speech-bubble::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 6px 6px 0;
-  border-style: solid;
-  border-color: #ffe3e3 transparent;
-  display: block;
-  width: 0;
-}
-
-@keyframes bubbleFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-.floating-pet-core,
-#pet-stage {
-  font-size: 4.5rem;
-  cursor: pointer;
-  animation: float 2s ease-in-out infinite;
-  display: inline-block;
   margin: 10px 0;
+  flex-shrink: 0;
+}
+
+.absolute-center-pet,
+#pet-stage {
+  font-size: 5rem;
+  cursor: pointer;
+  z-index: 5;
+  animation: float 2s ease-in-out infinite;
   filter: drop-shadow(0 0 12px rgba(255, 133, 162, 0.45));
 }
 
@@ -386,7 +321,7 @@ body {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 }
 
@@ -402,32 +337,104 @@ body {
   }
 }
 
-.title-sub {
+/* 💬 右侧对话气泡 */
+.speech-bubble-right {
+  position: absolute;
+  left: 62%;
+  top: 10px;
+  background: linear-gradient(135deg, #fff5f5, #ffe3e3);
+  border: 1px solid #ffb7b7;
+  color: #ff6b6b;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 12px;
   font-size: 0.7rem;
-  color: #7c6e70;
-  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(255, 183, 183, 0.25);
+  z-index: 10;
+  white-space: nowrap;
+  max-width: 42%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.nodes-counter {
-  margin-top: 5px;
+.speech-bubble-right::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 6px 6px 0;
+  border-style: solid;
+  border-color: transparent #ffe3e3;
+  display: block;
+  width: 0;
 }
 
-.nodes-label {
+.stage-info-footer {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.title-sub {
   font-size: 0.65rem;
-  color: #b5a4a4;
+  color: #7c6e70;
   letter-spacing: 0.12em;
 }
 
+.nodes-counter {
+  margin-top: 2px;
+}
+
+.nodes-label {
+  font-size: 0.6rem;
+  color: #b5a4a4;
+  letter-spacing: 0.14em;
+}
+
 #nodes-val {
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: #fff;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
 }
 
+/* 🍖 💧 照料按钮 */
+.care-action-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin: 10px 0;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.care-trigger {
+  flex: 1;
+  padding: 10px;
+  background: linear-gradient(135deg, #2c1f21, #1f1517);
+  border: 1px solid rgba(255, 133, 162, 0.25);
+  color: #ff85a2;
+  border-radius: 12px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+
+.care-trigger:active:not(:disabled) {
+  transform: scale(0.96);
+  border-color: #ff85a2;
+}
+
+.care-trigger:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .referral-area {
   width: 100%;
-  margin-top: 5px;
   flex-shrink: 0;
 }
 
@@ -449,12 +456,12 @@ body {
   transform: scale(0.98);
 }
 
-/* 🏆 局部滚动排行榜 */
+/* 排行榜局部内滑动 */
 .embedded-leaderboard {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   padding: 10px;
-  margin-top: 8px;
+  margin-top: 6px;
   border: 1px solid rgba(255, 255, 255, 0.02);
   flex-shrink: 0;
 }
@@ -462,7 +469,7 @@ body {
 .embedded-leaderboard h4 {
   font-size: 0.75rem;
   color: #ff85a2;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   text-align: center;
   letter-spacing: 0.1em;
 }
@@ -472,7 +479,7 @@ body {
   flex-direction: column;
   gap: 4px;
   max-height: 90px;
-  overflow-y: scroll;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
@@ -487,7 +494,7 @@ body {
   justify-content: space-between;
   font-size: 0.7rem;
   color: #b5a4a4;
-  padding: 5px;
+  padding: 4px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.01);
   flex-shrink: 0;
 }
@@ -503,7 +510,6 @@ body {
   color: #7c6e70;
 }
 
-/* 任务与设置 */
 .mission-card,
 .settings-box {
   background: rgba(255, 255, 255, 0.02);
@@ -558,16 +564,13 @@ body {
   font-weight: bold;
   cursor: pointer;
   margin-top: 20px;
-  transition: all 0.2s;
   letter-spacing: 0.06em;
 }
 
-.release-action-btn:hover,
 .release-action-btn:active {
   background: rgba(255, 71, 87, 0.2);
 }
 
-/* 底栏 */
 #app-navigation {
   flex-shrink: 0;
   height: 60px;
@@ -586,8 +589,8 @@ body {
   font-family: "Orbitron", sans-serif;
   font-size: 0.8rem;
   font-weight: bold;
-  letter-spacing: 0.1em;
   cursor: pointer;
+  letter-spacing: 0.1em;
   padding: 8px 12px;
 }
 
@@ -595,7 +598,6 @@ body {
   color: #ff85a2;
 }
 
-/* +1 飘字 */
 .float-layer {
   position: fixed;
   inset: 0;
