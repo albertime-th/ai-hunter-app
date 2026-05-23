@@ -6,61 +6,76 @@
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
   />
-  <meta name="theme-color" content="#130f10" />
-  <title>Nakamura AI Core</title>
+  <meta name="theme-color" content="#110d0e" />
+  <title>AI Hunter - Cyber Pet Atelier</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="style.css" />
   <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
 </head>
 <body>
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow--top" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow--bottom" aria-hidden="true"></div>
-
-  <div id="app-container" class="cyber-pet-atelier font-display">
+  <div id="app-container" class="cyber-pet-atelier">
     <header class="app-header-bar">
-      <div class="logo-area">NAKAMURA</div>
-      <div class="status-area">
-        <span class="status-dot online" aria-hidden="true"></span>
-        ONLINE
+      <div id="logo-text" class="logo-area">NAKAMURA</div>
+      <div class="lang-selector-wrapper">
+        <button type="button" id="lang-toggle-btn" class="lang-btn">🌐 LANG</button>
+        <div id="lang-dropdown-menu" class="lang-dropdown">
+          <div class="lang-opt" data-lang="en">English</div>
+          <div class="lang-opt" data-lang="hi">Hindi (हिंदी)</div>
+          <div class="lang-opt" data-lang="ru">Russian (Русский)</div>
+          <div class="lang-opt" data-lang="pt">Portuguese (Português)</div>
+          <div class="lang-opt" data-lang="uk">Ukrainian (Українська)</div>
+          <div class="lang-opt" data-lang="id">Bahasa Indonesia</div>
+        </div>
       </div>
     </header>
 
     <main class="app-main-content">
       <div id="view-game" class="app-view active">
         <div id="selection-stage">
-          <button type="button" id="btn-select-pet" class="font-display">
-            SELECT YOUR<br />PET
-          </button>
+          <button type="button" id="btn-select-pet">SELECT YOUR<br />PET</button>
           <p class="hint-text">Tap to awaken your cyber companion</p>
         </div>
 
+        <div id="pet-selection-pool" style="display: none;">
+          <h3 id="choose-title">CHOOSE YOUR COMPANION</h3>
+          <div class="pet-grid">
+            <div class="pet-card" data-emoji="🐱" data-name="Ragdoll"><span>🐱</span><p>Ragdoll</p></div>
+            <div class="pet-card" data-emoji="🦮" data-name="Golden"><span>🦮</span><p>Golden</p></div>
+            <div class="pet-card" data-emoji="🐕" data-name="Labrador"><span>🐕</span><p>Labrador</p></div>
+            <div class="pet-card" data-emoji="🦁" data-name="MaineCoon"><span>🦁</span><p>Maine Coon</p></div>
+            <div class="pet-card" data-emoji="🐈" data-name="Shorthair"><span>🐈</span><p>Shorthair</p></div>
+            <div class="pet-card" data-emoji="🐠" data-name="Koi"><span>🐠</span><p>Koi Fish</p></div>
+            <div class="pet-card" data-emoji="🐟" data-name="Goldfish"><span>🐟</span><p>Goldfish</p></div>
+            <div class="pet-card" data-emoji="🦜" data-name="Budgie"><span>🦜</span><p>Budgie</p></div>
+            <div class="pet-card" data-emoji="🕊️" data-name="Cockatiel"><span>🕊️</span><p>Cockatiel</p></div>
+            <div class="pet-card" data-emoji="🐹" data-name="Hamster"><span>🐹</span><p>Hamster</p></div>
+          </div>
+        </div>
+
         <div id="pet-growth-stage" style="display: none;">
-          <button type="button" id="btn-back-to-select" class="nav-back-btn font-display">
-            ◀ BACK
-          </button>
+          <button type="button" id="btn-back-to-select" class="nav-back-btn">◀ BACK</button>
 
           <div class="pet-stage-wrapper">
             <div
               id="pet-stage"
-              class="pet-idle"
+              class="floating-pet"
               role="button"
               tabindex="0"
               aria-label="Tap pet to earn nodes"
             >🐱</div>
-            <div class="title-sub font-display">TAP COMPANION TO MINE</div>
-            <div class="nodes-counter font-display" aria-live="polite">
-              <span class="nodes-label">NODES COLLECTED</span>
-              <span id="nodes-val" class="nodes-number">0</span>
+            <div class="title-sub">TAP COMPANION TO MINE</div>
+            <div class="nodes-counter" aria-live="polite">
+              <p class="nodes-label">NODES COLLECTED</p>
+              <h2 id="nodes-val">0</h2>
             </div>
           </div>
 
-          <div class="pet-control-panel font-display">
+          <div class="pet-control-panel">
             <div class="stat-row">
               <span class="stat-title">⚡ ENG: <span id="val-energy">100</span>%</span>
               <div class="progress-bar-bg">
@@ -74,56 +89,50 @@
               </div>
             </div>
             <div class="action-buttons">
-              <button type="button" id="btn-feed" class="action-btn">🍖 FEED (-50 Nodes)</button>
-              <button type="button" id="btn-drink" class="action-btn">💧 DRINK (-30 Nodes)</button>
+              <button type="button" id="btn-feed" class="action-btn">FEED (-50 Nodes)</button>
+              <button type="button" id="btn-drink" class="action-btn">DRINK (-50 Nodes)</button>
             </div>
           </div>
 
-          <div class="squad-footer-area">
-            <button type="button" id="btn-recruit" class="recruit-squad-btn font-display">
-              🔗 RECRUIT SQUAD (+500 NODES)
-            </button>
+          <div class="referral-area">
+            <button type="button" id="btn-recruit" class="recruit-btn">🔗 RECRUIT SQUAD (+500 NODES)</button>
           </div>
+
+          <section class="embedded-leaderboard">
+            <h4 id="rank-title">GLOBAL TOP 10</h4>
+            <div id="leaderboard-list" class="mini-rank-list">
+              <div class="rank-item loading">Synchronizing...</div>
+            </div>
+          </section>
         </div>
       </div>
 
-      <div id="view-leaderboard" class="app-view">
-        <div class="leaderboard-box font-display">
-          <h3>🏆 GLOBAL HUNTER LEADERBOARD</h3>
-          <p class="view-subtitle">Top elite units in the node collection matrix.</p>
-          <ul id="leaderboard-list">
-            <li class="loading">Synchronizing Singapore Data Hub...</li>
-          </ul>
+      <div id="view-missions" class="app-view" style="display: none;">
+        <h3 id="missions-title" class="view-heading">🚀 AMPLIFY YOUR NODES</h3>
+        <div class="mission-card">
+          <h5>Follow X (Twitter)</h5>
+          <p>+200 Nodes</p>
+        </div>
+        <div class="mission-card">
+          <h5>Join Telegram Channel</h5>
+          <p>+300 Nodes</p>
+        </div>
+        <div class="mission-card">
+          <h5>Recruit 3 New Hunters</h5>
+          <p>+5,000 Nodes</p>
         </div>
       </div>
 
-      <div id="view-missions" class="app-view">
-        <div class="missions-box font-display">
-          <h3>🚀 AMPLIFY YOUR NODES</h3>
-          <p class="view-subtitle">Complete global tasks to unlock massive network power.</p>
-
-          <div class="task-card">
-            <div>
-              <h4>🐦 FOLLOW OUR X</h4>
-              <p>Stay tuned with Alpha updates</p>
-            </div>
-            <span class="task-reward">+1,000</span>
+      <div id="view-settings" class="app-view" style="display: none;">
+        <h3 id="settings-title" class="view-heading">SETTINGS</h3>
+        <div class="settings-box">
+          <div class="setting-row">
+            <span id="set-p-1">Privacy &amp; Security</span>
+            <span class="setting-val setting-val--mint">HIGH</span>
           </div>
-
-          <div class="task-card">
-            <div>
-              <h4>📢 JOIN TELEGRAM ALPHA CHANNEL</h4>
-              <p>Enter the core private hub</p>
-            </div>
-            <span class="task-reward">+1,500</span>
-          </div>
-
-          <div class="task-card">
-            <div>
-              <h4>👥 RECRUIT 3 NEW HUNTERS</h4>
-              <p>Expand your telemetry squad</p>
-            </div>
-            <span class="task-reward">+5,000</span>
+          <div class="setting-row">
+            <span id="set-p-2">VeraCrypt Drive Status</span>
+            <span class="setting-val setting-val--rose">LOCKED (O:)</span>
           </div>
         </div>
       </div>
@@ -132,7 +141,7 @@
     <footer id="app-navigation" aria-label="Main navigation">
       <button type="button" class="nav-tab active" id="btn-nav-game">GAME</button>
       <button type="button" class="nav-tab" id="btn-nav-missions">MISSIONS</button>
-      <button type="button" class="nav-tab" id="btn-nav-leaderboard">LEADERBOARD</button>
+      <button type="button" class="nav-tab" id="btn-nav-settings">SETTINGS</button>
     </footer>
   </div>
 
