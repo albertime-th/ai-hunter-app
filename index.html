@@ -7,7 +7,7 @@
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
   />
   <meta name="theme-color" content="#110d0e" />
-  <title>AI Hunter - Cyber Pet Atelier</title>
+  <title>AI Hunter Master</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -44,12 +44,12 @@
         <div id="pet-selection-pool" style="display: none;">
           <h3 id="choose-title">CHOOSE YOUR COMPANION</h3>
           <div class="pet-grid">
-            <div class="pet-card" data-emoji="🐱" data-name="Ragdoll"><span>🐱</span><p>Ragdoll</p></div>
-            <div class="pet-card" data-emoji="🦮" data-name="Golden"><span>🦮</span><p>Golden</p></div>
             <div class="pet-card" data-emoji="🐕" data-name="Labrador"><span>🐕</span><p>Labrador</p></div>
+            <div class="pet-card" data-emoji="🦮" data-name="Golden"><span>🦮</span><p>Golden Retriever</p></div>
             <div class="pet-card" data-emoji="🦁" data-name="MaineCoon"><span>🦁</span><p>Maine Coon</p></div>
-            <div class="pet-card" data-emoji="🐈" data-name="Shorthair"><span>🐈</span><p>Shorthair</p></div>
-            <div class="pet-card" data-emoji="🐠" data-name="Koi"><span>🐠</span><p>Koi Fish</p></div>
+            <div class="pet-card" data-emoji="🐱" data-name="Ragdoll"><span>🐱</span><p>Ragdoll</p></div>
+            <div class="pet-card" data-emoji="🐈" data-name="Shorthair"><span>🐈</span><p>British Shorthair</p></div>
+            <div class="pet-card" data-emoji="🐠" data-name="Koi"><span>🐠</span><p>Koi</p></div>
             <div class="pet-card" data-emoji="🐟" data-name="Goldfish"><span>🐟</span><p>Goldfish</p></div>
             <div class="pet-card" data-emoji="🦜" data-name="Budgie"><span>🦜</span><p>Budgie</p></div>
             <div class="pet-card" data-emoji="🕊️" data-name="Cockatiel"><span>🕊️</span><p>Cockatiel</p></div>
@@ -58,12 +58,29 @@
         </div>
 
         <div id="pet-growth-stage" style="display: none;">
-          <button type="button" id="btn-back-to-select" class="nav-back-btn">◀ BACK</button>
+          <div class="pet-hud-status-panel">
+            <div class="hud-row">
+              <span id="lbl-hp" class="hud-label">❤️ HP</span>
+              <div class="hud-bar-bg"><div id="fill-hp" class="hud-fill fill-hp-color" style="width: 100%"></div></div>
+              <span id="val-hp" class="hud-val">100</span>
+            </div>
+            <div class="hud-row">
+              <span id="lbl-food" class="hud-label">🍖 FOOD</span>
+              <div class="hud-bar-bg"><div id="fill-food" class="hud-fill fill-food-color" style="width: 100%"></div></div>
+              <span id="val-food" class="hud-val">100</span>
+            </div>
+            <div class="hud-row">
+              <span id="lbl-water" class="hud-label">💧 WATER</span>
+              <div class="hud-bar-bg"><div id="fill-water" class="hud-fill fill-water-color" style="width: 100%"></div></div>
+              <span id="val-water" class="hud-val">100</span>
+            </div>
+          </div>
 
-          <div class="pet-stage-wrapper">
+          <div class="pet-avatar-wrapper">
+            <div id="pet-dialog-bubble" class="speech-bubble" style="display: none;">Welcome Home! 🌸</div>
             <div
               id="pet-stage"
-              class="floating-pet"
+              class="floating-pet-core"
               role="button"
               tabindex="0"
               aria-label="Tap pet to earn nodes"
@@ -75,32 +92,13 @@
             </div>
           </div>
 
-          <div class="pet-control-panel">
-            <div class="stat-row">
-              <span class="stat-title">⚡ ENG: <span id="val-energy">100</span>%</span>
-              <div class="progress-bar-bg">
-                <div id="fill-energy" class="progress-fill current-eng" style="width: 100%"></div>
-              </div>
-            </div>
-            <div class="stat-row">
-              <span class="stat-title">💧 HYD: <span id="val-hydration">100</span>%</span>
-              <div class="progress-bar-bg">
-                <div id="fill-hydration" class="progress-fill current-hyd" style="width: 100%"></div>
-              </div>
-            </div>
-            <div class="action-buttons">
-              <button type="button" id="btn-feed" class="action-btn">FEED (-50 Nodes)</button>
-              <button type="button" id="btn-drink" class="action-btn">DRINK (-50 Nodes)</button>
-            </div>
-          </div>
-
           <div class="referral-area">
             <button type="button" id="btn-recruit" class="recruit-btn">🔗 RECRUIT SQUAD (+500 NODES)</button>
           </div>
 
           <section class="embedded-leaderboard">
-            <h4 id="rank-title">GLOBAL TOP 10</h4>
-            <div id="leaderboard-list" class="mini-rank-list">
+            <h4 id="rank-title">GLOBAL RANKINGS</h4>
+            <div id="leaderboard-list" class="mini-rank-list-scrollable">
               <div class="rank-item loading">Synchronizing...</div>
             </div>
           </section>
@@ -108,19 +106,9 @@
       </div>
 
       <div id="view-missions" class="app-view" style="display: none;">
-        <h3 id="missions-title" class="view-heading">🚀 AMPLIFY YOUR NODES</h3>
-        <div class="mission-card">
-          <h5>Follow X (Twitter)</h5>
-          <p>+200 Nodes</p>
-        </div>
-        <div class="mission-card">
-          <h5>Join Telegram Channel</h5>
-          <p>+300 Nodes</p>
-        </div>
-        <div class="mission-card">
-          <h5>Recruit 3 New Hunters</h5>
-          <p>+5,000 Nodes</p>
-        </div>
+        <div class="mission-card"><h5>Follow X (Twitter)</h5><p>+200 Nodes</p></div>
+        <div class="mission-card"><h5>Join Telegram Channel</h5><p>+300 Nodes</p></div>
+        <div class="mission-card"><h5>Recruit 3 New Hunters</h5><p>+5,000 Nodes</p></div>
       </div>
 
       <div id="view-settings" class="app-view" style="display: none;">
@@ -135,6 +123,7 @@
             <span class="setting-val setting-val--rose">LOCKED (O:)</span>
           </div>
         </div>
+        <button type="button" id="btn-release-pet" class="release-action-btn">💔 RELEASE COMPANION</button>
       </div>
     </main>
 

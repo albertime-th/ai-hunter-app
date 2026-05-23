@@ -1,137 +1,160 @@
 /**
- * AI Hunter — i18n · Multi-Pet · Settings · Supabase Sync
+ * AI Hunter Master — i18n · HP/Food/Water · Release · Supabase
  */
 (function () {
   "use strict";
 
-  // ==========================================
-  // 1. 全球六国语言字典
-  // ==========================================
   const i18n = {
     en: {
       logo: "NAKAMURA",
       selectPet: "SELECT YOUR<br>PET",
       hintSelect: "Tap to awaken your cyber companion",
-      back: "◀ BACK",
-      feed: "FEED (-50 Nodes)",
-      drink: "DRINK (-50 Nodes)",
       recruit: "🔗 RECRUIT SQUAD (+500 NODES)",
       game: "GAME",
       missions: "MISSIONS",
       settings: "SETTINGS",
       chooseTitle: "CHOOSE YOUR COMPANION",
-      rankTitle: "GLOBAL TOP 10",
+      rankTitle: "GLOBAL RANKINGS",
       nodeLabel: "NODES COLLECTED",
       tplText: "TAP COMPANION TO MINE",
       langBtn: "🌐 LANG",
       set_title: "SETTINGS",
       set_privacy: "Privacy & Security",
       set_crypto: "VeraCrypt Drive Status",
+      welcomeHome: "Welcome Home! 🌸",
+      welcomeNew: "A new bond begins! 🌸",
+      releaseBtn: "💔 RELEASE COMPANION",
+      releaseFarewell:
+        "Thank you for the companionship along the way. May our paths cross again. 🌟",
+      foodLabel: "🍖 FOOD",
+      waterLabel: "💧 WATER",
+      healthLabel: "❤️ HP",
     },
     hi: {
       logo: "नाकामुरा",
       selectPet: "अपना पालतू<br>चुनें",
       hintSelect: "अपने साइबर साथी को जगाने के लिए टैप करें",
-      back: "◀ वापस",
-      feed: "खिलाएं (-50 Nodes)",
-      drink: "पिलाएं (-50 Nodes)",
       recruit: "🔗 दस्ता भर्ती करें (+500 NODES)",
       game: "खेल",
       missions: "मिशन",
       settings: "सेटिंग्स",
       chooseTitle: "अपना साथी चुनें",
-      rankTitle: "वैश्विक शीर्ष 10",
+      rankTitle: "वैश्विक रैंकिंग",
       nodeLabel: "नोड्स एकत्र किए गए",
       tplText: "माइन करने के लिए साथी पर टैप करें",
       langBtn: "🌐 भाषा",
       set_title: "सेटिंग्स",
       set_privacy: "गोपनीयता और सुरक्षा",
       set_crypto: "वेराक्रिप्ट ड्राइव स्थिति",
+      welcomeHome: "घर वापसी पर स्वागत है! 🌸",
+      welcomeNew: "एक नया बंधन शुरू! 🌸",
+      releaseBtn: "💔 साथी को आज़ाद करें",
+      releaseFarewell: "इस रास्ते में साथ देने के लिए धन्यवाद। फिर मिलेंगे। 🌟",
+      foodLabel: "🍖 भोजन",
+      waterLabel: "💧 पानी",
+      healthLabel: "❤️ स्वास्थ्य",
     },
     ru: {
       logo: "NAKAMURA",
       selectPet: "ВЫБЕРИТЕ<br>ПИТОМЦА",
       hintSelect: "Нажмите, чтобы пробудить кибер-спутника",
-      back: "◀ НАЗАД",
-      feed: "КОРМИТЬ (-50 Nodes)",
-      drink: "ПОИТЬ (-50 Nodes)",
       recruit: "🔗 НАЙМ ОТРЯДА (+500 NODES)",
       game: "ИГРА",
       missions: "МИССИИ",
       settings: "НАСТРОЙКИ",
       chooseTitle: "ВЫБЕРИТЕ СПУТНИКА",
-      rankTitle: "МИРОВОЙ ТОП 10",
+      rankTitle: "ГЛОБАЛЬНЫЙ РЕЙТИНГ",
       nodeLabel: "НОДОВ СОБРАНО",
       tplText: "НАЖМИТЕ ДЛЯ МАЙНИНГА",
       langBtn: "🌐 ЯЗЫК",
       set_title: "НАСТРОЙКИ",
       set_privacy: "Конфиденциальность",
       set_crypto: "Статус VeraCrypt",
+      welcomeHome: "С возвращением домой! 🌸",
+      welcomeNew: "Новая связь начинается! 🌸",
+      releaseBtn: "💔 ОТПУСТИТЬ ПИТОМЦА",
+      releaseFarewell:
+        "Спасибо за компанию на этом пути. До новых встреч. 🌟",
+      foodLabel: "🍖 ЕДА",
+      waterLabel: "💧 ВОДА",
+      healthLabel: "❤️ ЗДОРОВЬЕ",
     },
     pt: {
       logo: "NAKAMURA",
       selectPet: "ESCOLHA SEU<br>PET",
       hintSelect: "Toque para acordar seu companheiro cibernético",
-      back: "◀ VOLTAR",
-      feed: "ALIMENTAR (-50 Nodes)",
-      drink: "BEBER (-50 Nodes)",
       recruit: "🔗 RECRUTAR ESQUADRÃO (+500)",
       game: "JOGO",
       missions: "MISSÕES",
       settings: "OPÇÕES",
       chooseTitle: "ESCOLHA SEU COMPANHEIRO",
-      rankTitle: "TOP 10 GLOBAL",
+      rankTitle: "RANKING GLOBAL",
       nodeLabel: "NODES COLETADOS",
       tplText: "TOQUE PARA MINERAR",
       langBtn: "🌐 IDIOMA",
       set_title: "CONFIGURAÇÕES",
       set_privacy: "Privacidade e Segurança",
       set_crypto: "Status do VeraCrypt",
+      welcomeHome: "Bem-vindo de volta! 🌸",
+      welcomeNew: "Um novo vínculo começa! 🌸",
+      releaseBtn: "💔 LIBERTAR COMPANHEIRO",
+      releaseFarewell:
+        "Obrigado pela companhia ao longo do caminho. Que nos encontremos de novo. 🌟",
+      foodLabel: "🍖 FOME",
+      waterLabel: "💧 ÁGUA",
+      healthLabel: "❤️ SAÚDE",
     },
     uk: {
       logo: "NAKAMURA",
       selectPet: "ВИБЕРІТЬ<br>ТВАРИНУ",
       hintSelect: "Натисніть, щоб розбудити кібер-супутника",
-      back: "◀ НАЗАД",
-      feed: "ГОДУВАТИ (-50 Nodes)",
-      drink: "ПОЇТИ (-50 Nodes)",
       recruit: "🔗 НАЙНЯТИ ЗАГІН (+500 NODES)",
       game: "ГРА",
       missions: "МІСІЇ",
       settings: "НАЛАШТУВАННЯ",
       chooseTitle: "ВИБЕРІТЬ СУПУТНИКА",
-      rankTitle: "СВІТОВИЙ ТОП 10",
+      rankTitle: "ГЛОБАЛЬНИЙ РЕЙТИНГ",
       nodeLabel: "НОДІВ ЗІБРАНО",
       tplText: "НАТИСНІТЬ ДЛЯ МАЙНІНГУ",
       langBtn: "🌐 МОВА",
       set_title: "НАЛАШТУВАННЯ",
       set_privacy: "Конфіденційність",
       set_crypto: "Статус VeraCrypt",
+      welcomeHome: "З поверненням додому! 🌸",
+      welcomeNew: "Новий зв'язок починається! 🌸",
+      releaseBtn: "💔 ВІДПУСТИТИ СУПУТНИКА",
+      releaseFarewell:
+        "Дякую за компанію на цьому шляху. До нових зустрічей. 🌟",
+      foodLabel: "🍖 ЇЖА",
+      waterLabel: "💧 ВОДА",
+      healthLabel: "❤️ ЗДОРОВ'Я",
     },
     id: {
       logo: "NAKAMURA",
       selectPet: "PILIH<br>HEWAN",
       hintSelect: "Ketuk untuk membangunkan pendamping siber",
-      back: "◀ KEMBALI",
-      feed: "BERI MAKAN (-50 Nodes)",
-      drink: "BERI MINUM (-50 Nodes)",
       recruit: "🔗 REKRUT SQUAD (+500 NODES)",
       game: "GAME",
       missions: "MISI",
       settings: "PENGATURAN",
       chooseTitle: "PILIH PENDAMPING ANDA",
-      rankTitle: "TOP 10 GLOBAL",
+      rankTitle: "PERINGKAT GLOBAL",
       nodeLabel: "NODE DIKUMPULKAN",
       tplText: "KETUK UNTUK MENAMBANG",
       langBtn: "🌐 BAHASA",
       set_title: "PENGATURAN",
       set_privacy: "Privasi & Keamanan",
       set_crypto: "Status Drive VeraCrypt",
+      welcomeHome: "Selamat datang di rumah! 🌸",
+      welcomeNew: "Ikatan baru dimulai! 🌸",
+      releaseBtn: "💔 LEPASKAN PENDAMPING",
+      releaseFarewell:
+        "Terima kasih atas kebersamaan di sepanjang jalan. Sampai jumpa lagi. 🌟",
+      foodLabel: "🍖 MAKAN",
+      waterLabel: "💧 AIR",
+      healthLabel: "❤️ HP",
     },
   };
-
-  const CARE_COST = 50;
-  const CARE_RECOVERY = 30;
 
   const supabaseUrl = "https://sitoruyhhzjubxvblems.supabase.co";
   const supabaseKey =
@@ -141,13 +164,13 @@
       ? window.supabase.createClient(supabaseUrl, supabaseKey)
       : null;
 
-  let decayTimer = null;
+  let tickerTimer = null;
+  let bubbleTimer = null;
 
   function loadLegacyPetState() {
     try {
       const saved = localStorage.getItem("ai_hunter_pet_state");
-      if (!saved) return null;
-      return JSON.parse(saved);
+      return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
     }
@@ -163,8 +186,15 @@
       legacy?.hasPet === true,
     selectedPetEmoji: localStorage.getItem("selectedPetEmoji") || "🐱",
     selectedPetName: localStorage.getItem("selectedPetName") || "Ragdoll",
-    energy: legacy?.energy ?? 100,
-    hydration: legacy?.hydration ?? 100,
+    hp: parseInt(localStorage.getItem("petHP"), 10) || 100,
+    food:
+      (localStorage.getItem("petFood") !== null
+        ? parseInt(localStorage.getItem("petFood"), 10)
+        : legacy?.energy) ?? 100,
+    water:
+      (localStorage.getItem("petWater") !== null
+        ? parseInt(localStorage.getItem("petWater"), 10)
+        : legacy?.hydration) ?? 100,
   };
 
   let playerId = localStorage.getItem("ai_hunter_player_id");
@@ -179,17 +209,46 @@
   const petStage = document.getElementById("pet-stage");
   const floatLayer = document.getElementById("float-layer");
   const nodesEl = document.getElementById("nodes-val");
-  const btnFeed = document.getElementById("btn-feed");
-  const btnDrink = document.getElementById("btn-drink");
 
-  // ==========================================
-  // Telegram & Supabase
-  // ==========================================
+  function clampStat(value) {
+    return Math.max(0, Math.min(100, value));
+  }
+
+  function saveStateToLocal() {
+    localStorage.setItem("userNodes", String(appState.nodes));
+    localStorage.setItem("hasSelectedPet", String(appState.hasSelectedPet));
+    localStorage.setItem("selectedPetEmoji", appState.selectedPetEmoji);
+    localStorage.setItem("selectedPetName", appState.selectedPetName);
+    localStorage.setItem("petHP", String(appState.hp));
+    localStorage.setItem("petFood", String(appState.food));
+    localStorage.setItem("petWater", String(appState.water));
+    localStorage.setItem("lastSavedTime", String(Date.now()));
+    localStorage.setItem(
+      "ai_hunter_pet_state",
+      JSON.stringify({
+        hasPet: appState.hasSelectedPet,
+        selectedType: appState.selectedPetName,
+        energy: appState.food,
+        hydration: appState.water,
+      })
+    );
+  }
+
+  function checkOfflineDecay() {
+    const lastTime = localStorage.getItem("lastSavedTime");
+    if (!lastTime) return;
+
+    const diffHours = (Date.now() - parseInt(lastTime, 10)) / (1000 * 60 * 60);
+    if (diffHours >= 12) {
+      appState.food = Math.max(0, appState.food - 25);
+      appState.water = Math.max(0, appState.water - 30);
+      saveStateToLocal();
+    }
+  }
 
   function initTelegram() {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
-
     tg.ready();
     tg.expand();
     document.documentElement.style.setProperty(
@@ -205,36 +264,14 @@
   function getReferralParam() {
     const urlParams = new URLSearchParams(window.location.search);
     let ref = urlParams.get("ref");
-
     if (window.Telegram?.WebApp?.initDataUnsafe?.start_param) {
       ref = window.Telegram.WebApp.initDataUnsafe.start_param;
     }
     return ref;
   }
 
-  function clampStat(value) {
-    return Math.max(0, Math.min(100, value));
-  }
-
-  function persistLocalState() {
-    localStorage.setItem("userNodes", String(appState.nodes));
-    localStorage.setItem("hasSelectedPet", String(appState.hasSelectedPet));
-    localStorage.setItem("selectedPetEmoji", appState.selectedPetEmoji);
-    localStorage.setItem("selectedPetName", appState.selectedPetName);
-    localStorage.setItem(
-      "ai_hunter_pet_state",
-      JSON.stringify({
-        hasPet: appState.hasSelectedPet,
-        selectedType: appState.selectedPetName,
-        energy: appState.energy,
-        hydration: appState.hydration,
-      })
-    );
-  }
-
   async function syncScoreToCloud() {
     if (!supabase) return;
-
     try {
       await supabase.from("clicks").upsert(
         {
@@ -245,23 +282,22 @@
         { onConflict: "player_id" }
       );
       updateLeaderboard();
-    } catch (e) {
+    } catch {
       console.warn("[Sync] Score deferred to local cache.");
     }
   }
 
   async function fetchUserScore() {
     if (!supabase) {
-      if (!localStorage.getItem("userNodes") && !appState.hasSelectedPet) {
+      if (!localStorage.getItem("userNodes") && appState.nodes === 0) {
         appState.nodes = 500;
-        persistLocalState();
+        saveStateToLocal();
       }
       updateUI();
       return;
     }
 
     const referrerId = getReferralParam();
-
     try {
       const { data } = await supabase
         .from("clicks")
@@ -284,11 +320,10 @@
         appState.nodes = data.score;
       }
 
-      persistLocalState();
+      saveStateToLocal();
       updateUI();
       updateLeaderboard();
     } catch {
-      console.log("[System] Operating in offline mode.");
       updateUI();
     }
   }
@@ -326,15 +361,10 @@
         })
         .join("");
     } catch (e) {
-      console.error("[Leaderboard Sync Error]:", e.message);
       listElement.innerHTML =
-        '<div class="rank-item loading">Sync failed — check console.</div>';
+        '<div class="rank-item loading">Sync failed.</div>';
     }
   }
-
-  // ==========================================
-  // i18n Engine
-  // ==========================================
 
   function applyLanguage(lang) {
     if (!i18n[lang]) lang = "en";
@@ -355,9 +385,6 @@
     setHTML("btn-select-pet", dict.selectPet);
     const hint = document.querySelector(".hint-text");
     if (hint) hint.textContent = dict.hintSelect;
-    setText("btn-back-to-select", dict.back);
-    setText("btn-feed", dict.feed);
-    setText("btn-drink", dict.drink);
     setText("btn-recruit", dict.recruit);
     setText("lang-toggle-btn", dict.langBtn);
     setText("choose-title", dict.chooseTitle);
@@ -365,18 +392,20 @@
     setText("settings-title", dict.set_title);
     setText("set-p-1", dict.set_privacy);
     setText("set-p-2", dict.set_crypto);
+    setText("btn-release-pet", dict.releaseBtn);
+    setText("lbl-hp", dict.healthLabel);
+    setText("lbl-food", dict.foodLabel);
+    setText("lbl-water", dict.waterLabel);
 
     const nodesLabel = document.querySelector(".nodes-label");
     if (nodesLabel) nodesLabel.textContent = dict.nodeLabel;
     const titleSub = document.querySelector(".title-sub");
     if (titleSub) titleSub.textContent = dict.tplText;
 
-    const tabs = document.querySelectorAll(".nav-tab");
-    if (tabs.length >= 3) {
-      tabs[0].textContent = dict.game;
-      tabs[1].textContent = dict.missions;
-      tabs[2].textContent = dict.settings;
-    }
+    document.querySelectorAll(".nav-tab").forEach((tab, i) => {
+      const labels = [dict.game, dict.missions, dict.settings];
+      if (labels[i]) tab.textContent = labels[i];
+    });
   }
 
   function setupLanguageDropdown() {
@@ -401,30 +430,40 @@
     });
   }
 
-  // ==========================================
-  // UI & Pet Lifecycle
-  // ==========================================
+  function triggerBubble(text) {
+    const bubble = document.getElementById("pet-dialog-bubble");
+    if (!bubble) return;
+
+    if (bubbleTimer) clearTimeout(bubbleTimer);
+    bubble.textContent = text;
+    bubble.style.display = "block";
+    bubbleTimer = setTimeout(() => {
+      bubble.style.display = "none";
+    }, 5000);
+  }
+
+  function renderStatusBars() {
+    appState.hp = clampStat(appState.hp);
+    appState.food = clampStat(appState.food);
+    appState.water = clampStat(appState.water);
+
+    const pairs = [
+      ["fill-hp", "val-hp", appState.hp],
+      ["fill-food", "val-food", appState.food],
+      ["fill-water", "val-water", appState.water],
+    ];
+
+    pairs.forEach(([fillId, valId, val]) => {
+      const fill = document.getElementById(fillId);
+      const label = document.getElementById(valId);
+      if (fill) fill.style.width = `${val}%`;
+      if (label) label.textContent = Math.round(val);
+    });
+  }
 
   function updateUI() {
     if (nodesEl) nodesEl.textContent = String(appState.nodes);
     renderStatusBars();
-    if (btnFeed) btnFeed.disabled = appState.nodes < CARE_COST;
-    if (btnDrink) btnDrink.disabled = appState.nodes < CARE_COST;
-  }
-
-  function renderStatusBars() {
-    appState.energy = clampStat(appState.energy);
-    appState.hydration = clampStat(appState.hydration);
-
-    const fillEnergy = document.getElementById("fill-energy");
-    const fillHydration = document.getElementById("fill-hydration");
-    const valEnergy = document.getElementById("val-energy");
-    const valHydration = document.getElementById("val-hydration");
-
-    if (fillEnergy) fillEnergy.style.width = `${appState.energy}%`;
-    if (valEnergy) valEnergy.textContent = Math.round(appState.energy);
-    if (fillHydration) fillHydration.style.width = `${appState.hydration}%`;
-    if (valHydration) valHydration.textContent = Math.round(appState.hydration);
   }
 
   function showGrowthStage() {
@@ -441,8 +480,6 @@
       selectionStage.classList.remove("is-hidden");
       selectionStage.style.display = "flex";
     }
-    const selectBtn = document.getElementById("btn-select-pet");
-    if (selectBtn) selectBtn.classList.remove("ghost-hidden");
   }
 
   function spawnPlusOne(amount) {
@@ -450,8 +487,7 @@
     const node = document.createElement("span");
     node.className = "float-plus";
     node.textContent = `+${amount}`;
-    const jitterX = (Math.random() - 0.5) * 48;
-    node.style.marginLeft = `${jitterX}px`;
+    node.style.marginLeft = `${(Math.random() - 0.5) * 48}px`;
     floatLayer.appendChild(node);
     node.addEventListener("animationend", () => node.remove());
   }
@@ -463,33 +499,33 @@
     petStage.classList.add("pet-bounce");
   }
 
-  function startLifeDecay() {
-    if (decayTimer) clearInterval(decayTimer);
+  function startLifeTickers() {
+    if (tickerTimer) clearInterval(tickerTimer);
 
-    decayTimer = setInterval(() => {
+    tickerTimer = setInterval(() => {
       if (!appState.hasSelectedPet) return;
-      appState.energy = Math.max(0, appState.energy - 2);
-      appState.hydration = Math.max(0, appState.hydration - 2);
+      appState.food = Math.min(100, appState.food + 1);
+      appState.water = Math.min(100, appState.water + 1);
       renderStatusBars();
-      persistLocalState();
-    }, 8000);
+      saveStateToLocal();
+    }, 1000);
   }
 
-  function handleCare(type) {
-    if (appState.nodes < CARE_COST) return;
-    appState.nodes -= CARE_COST;
-    appState[type] = clampStat(appState[type] + CARE_RECOVERY);
-    persistLocalState();
-    updateUI();
-    syncScoreToCloud();
+  function stopLifeTickers() {
+    if (tickerTimer) clearInterval(tickerTimer);
+    tickerTimer = null;
   }
 
   function setupPetSystem() {
     const selectPetBtn = document.getElementById("btn-select-pet");
-    const backBtn = document.getElementById("btn-back-to-select");
 
     if (selectPetBtn) {
       selectPetBtn.addEventListener("click", () => {
+        if (appState.hasSelectedPet) {
+          showGrowthStage();
+          startLifeTickers();
+          return;
+        }
         if (selectionStage) selectionStage.classList.add("is-hidden");
         if (petSelectionPool) petSelectionPool.style.display = "flex";
       });
@@ -503,32 +539,29 @@
         appState.hasSelectedPet = true;
         appState.selectedPetEmoji = emoji;
         appState.selectedPetName = name;
-        persistLocalState();
+        appState.hp = 100;
+        appState.food = 100;
+        appState.water = 100;
+        saveStateToLocal();
 
         showGrowthStage();
-        startLifeDecay();
+        triggerBubble(i18n[appState.currentLang].welcomeNew);
+        startLifeTickers();
+        updateUI();
         updateLeaderboard();
       });
     });
 
-    if (backBtn) {
-      backBtn.addEventListener("click", () => {
-        if (decayTimer) clearInterval(decayTimer);
-        decayTimer = null;
-        showSelectionStage();
-      });
-    }
-
     if (petStage) {
       petStage.addEventListener("click", async () => {
         if (!appState.hasSelectedPet) return;
-        if (appState.energy <= 0 || appState.hydration <= 0) return;
+        if (appState.food <= 0 || appState.water <= 0) return;
 
         appState.nodes += 1;
-        appState.energy = Math.max(0, appState.energy - 1);
-        appState.hydration = Math.max(0, appState.hydration - 1);
+        appState.food = Math.max(0, appState.food - 1);
+        appState.water = Math.max(0, appState.water - 1);
 
-        persistLocalState();
+        saveStateToLocal();
         updateUI();
         spawnPlusOne(1);
         petBounce();
@@ -544,8 +577,51 @@
       });
     }
 
-    if (btnFeed) btnFeed.addEventListener("click", () => handleCare("energy"));
-    if (btnDrink) btnDrink.addEventListener("click", () => handleCare("hydration"));
+    const releaseBtn = document.getElementById("btn-release-pet");
+    if (releaseBtn) {
+      releaseBtn.addEventListener("click", () => {
+        if (!appState.hasSelectedPet) return;
+
+        document.querySelectorAll(".nav-tab").forEach((t) => t.classList.remove("active"));
+        const gameTab = document.getElementById("btn-nav-game");
+        if (gameTab) gameTab.classList.add("active");
+
+        document.querySelectorAll(".app-view").forEach((v) => {
+          v.classList.remove("active");
+          v.style.display = "none";
+        });
+        const gameView = document.getElementById("view-game");
+        if (gameView) {
+          gameView.classList.add("active");
+          gameView.style.display = "block";
+        }
+
+        showGrowthStage();
+        triggerBubble(i18n[appState.currentLang].releaseFarewell);
+
+        setTimeout(() => {
+          stopLifeTickers();
+
+          appState.hasSelectedPet = false;
+          appState.selectedPetEmoji = "🐱";
+          appState.selectedPetName = "Ragdoll";
+          appState.hp = 100;
+          appState.food = 100;
+          appState.water = 100;
+
+          localStorage.removeItem("hasSelectedPet");
+          localStorage.removeItem("selectedPetEmoji");
+          localStorage.removeItem("selectedPetName");
+          localStorage.removeItem("petFood");
+          localStorage.removeItem("petWater");
+          localStorage.removeItem("petHP");
+          localStorage.removeItem("lastSavedTime");
+          localStorage.removeItem("ai_hunter_pet_state");
+
+          showSelectionStage();
+        }, 4500);
+      });
+    }
   }
 
   function setupRecruitButton() {
@@ -598,6 +674,7 @@
         if (viewId === "view-game") {
           if (appState.hasSelectedPet) {
             showGrowthStage();
+            renderStatusBars();
           } else {
             showSelectionStage();
           }
@@ -609,8 +686,11 @@
   function bootstrapReturningPlayer() {
     if (!appState.hasSelectedPet) return;
 
+    checkOfflineDecay();
     showGrowthStage();
-    startLifeDecay();
+    startLifeTickers();
+    triggerBubble(i18n[appState.currentLang].welcomeHome);
+    renderStatusBars();
   }
 
   async function initApp() {
@@ -624,6 +704,7 @@
     await fetchUserScore();
     bootstrapReturningPlayer();
     updateLeaderboard();
+    saveStateToLocal();
   }
 
   if (document.readyState === "loading") {
